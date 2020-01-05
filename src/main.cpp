@@ -63,7 +63,7 @@ DWORD WINAPI task1(LPVOID pragma)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-        Sleep(5 * 1000); /*Just to let the system breath*/
+        Sleep(10); /*Just to let the system breath*/
     }
 }
 int main(int argc, char **argv)
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-        Sleep(5 * 1000); /*Just to let the system breath*/
+        Sleep(10); /*Just to let the system breath*/
     }
     return 0;
 }
