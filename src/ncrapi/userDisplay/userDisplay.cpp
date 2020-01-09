@@ -1,6 +1,6 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
-#include "lv_examples\lv_apps\demo\demo.h"
+#include "lv_examples\lv_tutorial\7_fonts\lv_tutorial_fonts.h"
 UserDisplay::UserDisplay()
 {
-    demo_create();
+    lv_tutorial_fonts();
 }

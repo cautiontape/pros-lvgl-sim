@@ -31,8 +31,6 @@
  *
  */
 
-
-
 /*********************
  *      INCLUDES
  *********************/
@@ -56,7 +54,7 @@
 /**********************
  *  STATIC VARIABLES
  **********************/
-LV_FONT_DECLARE(arial_20)        /*Declare a font*/
+LV_FONT_DECLARE(ncr_font10) /*Declare a font*/
 
 /**********************
  *      MACROS
@@ -74,13 +72,13 @@ void lv_tutorial_fonts(void)
     /*Create a style and use the new font*/
     static lv_style_t style1;
     lv_style_copy(&style1, &lv_style_plain);
-    style1.text.font = &arial_20; /*Set the base font whcih is concatenated with the others*/
+    style1.text.font = &ncr_font10; /*Set the base font whcih is concatenated with the others*/
 
     /*Create a label and set new text*/
-    lv_obj_t * label = lv_label_create(lv_disp_get_scr_act(NULL), NULL);
+    lv_obj_t *label = lv_label_create(lv_disp_get_scr_act(NULL), NULL);
     lv_obj_set_pos(label, 10, 10);
     lv_label_set_style(label, LV_LABEL_STYLE_MAIN, &style1);
-    lv_label_set_text(label, "Hello\nпривет\n∞∑");      /*Use ASCII and Cyrillic letters together*/
+    lv_label_set_text(label, "Hello\n新世纪\n你好啊"); /*Use ASCII and Cyrillic letters together*/
 }
 
 /**********************
