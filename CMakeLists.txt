@@ -6,10 +6,12 @@ project(pros_lvgl_sim)
 set(CMAKE_C_STANDARD 11)#C11
 set(CMAKE_CXX_STANDARD 17)#C17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options(-Wno-unused-variable -Wno-unused-function)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-variable -Wno-unused-function")
 #头文件路径
-INCLUDE_DIRECTORIES("include")
-
+include_directories(
+    ${TOOLCHAIN_INC_DIR} 
+    "./include"
+)
 set(MODE 1)# 1正常编译 2生成静态库
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) #设置二进制文件存放路径 
@@ -19,10 +21,10 @@ if(MODE EQUAL 1)
     file(GLOB_RECURSE INCLUDES "include/*.h" "include/*.hpp")
     #枚举源文件
     file(GLOB_RECURSE SOURCES "include/lv_examples/*.c" "src/*.c" "src/*.cpp")
-    # #添加需要链接的库文件目录 新建好了 链接的时候用
+    #添加需要链接的库文件目录 新建好了 链接的时候用
     LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
-    #加入一些-D
-    #ADD_DEFINITIONS () 
+    #添加-D
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     #生成可执行文件
     add_executable(main ${SOURCES} ${INCLUDES})
     #链接SDL2的静态库
