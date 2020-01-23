@@ -26,8 +26,18 @@ if(MODE EQUAL 1)
     #生成可执行文件
     add_executable(main ${SOURCES} ${INCLUDES})
     #链接SDL2的静态库
-    target_link_libraries(main  SDL2 SDL2main lvgl drivers)#不链接pthread easylog编译报错
-    #target_link_libraries(main PRIVATE SDL2 liblvgl.a libdrivers.a libresources.a pthread)#不链接pthread easylog编译报错
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)
+        message(STATUS "linux")
+        #寻找sdl2
+        find_package(SDL2 REQUIRED SDL2)
+        include_directories(${SDL2_INCLUDE_DIRS})
+        target_link_libraries(main PRIVATE SDL2 lvgl_linux drivers_linux pthread)#不链接pthread easylog编译报错
+    elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
+        message(STATUS "windows")
+        target_link_libraries(main  SDL2 SDL2main lvgl_win drivers_win)#不链接pthread easylog编译报错
+    else()
+        message(STATUS "无法判断属于哪种系统!")
+    endif()
     #添加一个run命令
     add_custom_target (run COMMAND ninja all  COMMAND ${EXECUTABLE_OUTPUT_PATH}/main)
 else() 
@@ -35,9 +45,19 @@ else()
     file(GLOB_RECURSE LIBLVGL "./include/lvgl/*.c")
     file(GLOB_RECURSE LIBDRIVERS "./include/lv_drivers/*.c")
     #file(GLOB_RECURSE LIBRESOURCES "./src/system/logo.c" "./src/system/field.c")
-    add_library(lvgl STATIC ${LIBLVGL})
-    add_library(drivers STATIC ${LIBDRIVERS})
-    #add_library(resources STATIC ${LIBRESOURCES})
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)
+        message(STATUS "linux")
+        add_library(lvgl_linux STATIC ${LIBLVGL})
+        add_library(drivers_linux STATIC ${LIBDRIVERS})
+        #add_library(resources STATIC ${LIBRESOURCES}_linux)
+    elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
+        message(STATUS "windows")
+        add_library(lvgl_win STATIC ${LIBLVGL})
+        add_library(drivers_win STATIC ${LIBDRIVERS})
+        #add_library(resources STATIC ${LIBRESOURCES}_win)
+    else()
+        message(STATUS "无法判断属于哪种系统!")
+    endif()
 endif()
 
 
