@@ -50,7 +50,7 @@ static void hal_init(void)
    * Create an SDL thread to do this*/
     SDL_CreateThread(tick_thread, "tick", NULL);
 }
-
+#if defined(_WIN32)||defined(_WIN64))
 DWORD WINAPI task1(LPVOID pragma)
 {
     (void)pragma;
@@ -66,10 +66,35 @@ DWORD WINAPI task1(LPVOID pragma)
         Sleep(10); /*Just to let the system breath*/
     }
 }
+#else
+   void *task1(void *pragma)
+{
+    (void)pragma;
+    /*Initialize LittlevGL*/
+    lv_init();
+    /*Initialize the HAL (display, input devices, tick) for LittlevGL*/
+    hal_init();
+    while (1)
+    {
+        /* Periodically call the lv_task handler.
+         * It could be done in a timer interrupt or an OS task too.*/
+        lv_task_handler();
+        usleep(5 * 1000); /*Just to let the system breath*/
+    }
+}
+#endif
+
 int main(int argc, char **argv)
 {
+#if defined(_WIN32)||defined(_WIN64))
     HANDLE ret = CreateThread(nullptr, 0, task1, nullptr, 0, nullptr);
     Sleep(1000); /*Just to let the system breath*/
+#else
+    pthread_t id; //pthread_t多线程标识符
+    int ret = pthread_create(&id, nullptr, task1, nullptr);
+    usleep(1000); /*Just to let the system breath*/
+#endif
+
     init();
     autonomous();
     while (1)
@@ -77,7 +102,12 @@ int main(int argc, char **argv)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-        Sleep(10); /*Just to let the system breath*/
+#if defined(_WIN32)||defined(_WIN64))
+    Sleep(10); /*Just to let the system breath*/
+#else
+    usleep(5 * 1000);
+#endif
+
     }
     return 0;
 }

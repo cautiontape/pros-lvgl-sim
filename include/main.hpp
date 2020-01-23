@@ -12,7 +12,12 @@
 #include "lv_drivers/indev/mouse.h"
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include <SDL2/SDL.h>
+#if defined(_WIN32)||defined(_WIN64))
 #include <Windows.h>
+#else
+#include <pthread.h>
+#include <unistd.h>
+#endif
 #include <iostream>
 
 static lv_indev_t *kb_indev;

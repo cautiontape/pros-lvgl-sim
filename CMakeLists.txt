@@ -12,7 +12,7 @@ include_directories(
     ${TOOLCHAIN_INC_DIR} 
     "./include"
 )
-set(MODE 1)# 1正常编译 2生成静态库
+set(MODE 2)# 1正常编译 2生成静态库
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) #设置二进制文件存放路径 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/firmware) #设置各种库存放路径
@@ -33,7 +33,7 @@ if(MODE EQUAL 1)
         #寻找sdl2
         find_package(SDL2 REQUIRED SDL2)
         include_directories(${SDL2_INCLUDE_DIRS})
-        target_link_libraries(main PRIVATE SDL2 lvgl_linux drivers_linux pthread)#不链接pthread easylog编译报错
+        target_link_libraries(main PRIVATE SDL2 lvgl_gcc drivers_gcc pthread)#不链接pthread easylog编译报错
     elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
         message(STATUS "windows")
         target_link_libraries(main  SDL2 SDL2main lvgl_win drivers_win)#不链接pthread easylog编译报错
@@ -44,13 +44,18 @@ if(MODE EQUAL 1)
     add_custom_target (run COMMAND ninja all  COMMAND ${EXECUTABLE_OUTPUT_PATH}/main)
 else() 
     #要建立的静态库
-    file(GLOB_RECURSE LIBLVGL "./include/lvgl/*.c")
-    file(GLOB_RECURSE LIBDRIVERS "./include/lv_drivers/*.c")
+    file(GLOB_RECURSE LIBLVGL "include/lvgl/*.c")
+    file(GLOB_RECURSE LIBDRIVERS "include/lv_drivers/*.c")
+    message(STATUS "LIBLVGL_PATH:${LIBLVGL}")
+    message(STATUS "LIBDRIVERS_PATH:${LIBDRIVERS}")
     #file(GLOB_RECURSE LIBRESOURCES "./src/system/logo.c" "./src/system/field.c")
     if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)
         message(STATUS "linux")
-        add_library(lvgl_linux STATIC ${LIBLVGL})
-        add_library(drivers_linux STATIC ${LIBDRIVERS})
+        #寻找sdl2
+        find_package(SDL2 REQUIRED SDL2)
+        include_directories(${SDL2_INCLUDE_DIRS})
+        add_library(lvgl_gcc STATIC ${LIBLVGL})
+        add_library(drivers_gcc STATIC ${LIBDRIVERS})
         #add_library(resources STATIC ${LIBRESOURCES}_linux)
     elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
         message(STATUS "windows")
