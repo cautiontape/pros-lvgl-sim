@@ -1,4 +1,5 @@
 !/bin/SDL2.dll
+bin/
 /build
 *.exe
 *.idb

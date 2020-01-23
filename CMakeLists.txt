@@ -12,7 +12,7 @@ include_directories(
     ${TOOLCHAIN_INC_DIR} 
     "./include"
 )
-set(MODE 2)# 1正常编译 2生成静态库
+set(MODE 1)# 1正常编译 2生成静态库
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) #设置二进制文件存放路径 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/firmware) #设置各种库存放路径
@@ -23,8 +23,6 @@ if(MODE EQUAL 1)
     file(GLOB_RECURSE SOURCES "include/lv_examples/*.c" "src/*.c" "src/*.cpp")
     #添加需要链接的库文件目录 新建好了 链接的时候用
     LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
-    #添加-D
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     #生成可执行文件
     add_executable(main ${SOURCES} ${INCLUDES})
     #链接SDL2的静态库
@@ -36,6 +34,8 @@ if(MODE EQUAL 1)
         target_link_libraries(main PRIVATE SDL2 lvgl_gcc drivers_gcc pthread)#不链接pthread easylog编译报错
     elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
         message(STATUS "windows")
+        #添加-D
+        add_definitions(-D_CRT_SECURE_NO_WARNINGS)
         target_link_libraries(main  SDL2 SDL2main lvgl_win drivers_win)#不链接pthread easylog编译报错
     else()
         message(STATUS "无法判断属于哪种系统!")

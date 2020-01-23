@@ -50,7 +50,7 @@ static void hal_init(void)
    * Create an SDL thread to do this*/
     SDL_CreateThread(tick_thread, "tick", NULL);
 }
-#if defined(_WIN32)||defined(_WIN64))
+#if defined(_WIN32)||defined(_WIN64)
 DWORD WINAPI task1(LPVOID pragma)
 {
     (void)pragma;
@@ -86,7 +86,7 @@ DWORD WINAPI task1(LPVOID pragma)
 
 int main(int argc, char **argv)
 {
-#if defined(_WIN32)||defined(_WIN64))
+#if defined(_WIN32)||defined(_WIN64)
     HANDLE ret = CreateThread(nullptr, 0, task1, nullptr, 0, nullptr);
     Sleep(1000); /*Just to let the system breath*/
 #else
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-#if defined(_WIN32)||defined(_WIN64))
+#if defined(_WIN32)||defined(_WIN64)
     Sleep(10); /*Just to let the system breath*/
 #else
     usleep(5 * 1000);
