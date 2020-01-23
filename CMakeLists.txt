@@ -1,7 +1,7 @@
 #设置最低的编译版本
 cmake_minimum_required(VERSION 3.10)
 #项目名称
-project(clangStuady)
+project(pros_lvgl_sim)
 #设置c/c++标准
 set(CMAKE_C_STANDARD 11)#C11
 set(CMAKE_CXX_STANDARD 17)#C17
