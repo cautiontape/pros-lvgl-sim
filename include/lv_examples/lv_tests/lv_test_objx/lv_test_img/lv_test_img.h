@@ -14,13 +14,11 @@ extern "C" {
  *      INCLUDES
  *********************/
 #ifdef LV_CONF_INCLUDE_SIMPLE
-#include "lv_ex_conf.h"
 #include "lvgl.h"
-
+#include "lv_ex_conf.h"
 #else
-#include "../../../../lv_ex_conf.h"
 #include "../../../../lvgl/lvgl.h"
-
+#include "../../../../lv_ex_conf.h"
 #endif
 
 #if LV_USE_IMG && LV_USE_TESTS
@@ -36,9 +34,6 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
-
-LV_IMG_DECLARE(logo)
-LV_IMG_DECLARE(field)
 
 /**
  * Create images to test their functionalities
