@@ -16,7 +16,7 @@ set(MODE 1)# 1正常编译 2生成静态库
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) #设置二进制文件存放路径 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/firmware) #设置各种库存放路径
-if(MODE EQUAL 1)
+if(MODE EQUAL 2)
     #枚举头文件
     file(GLOB_RECURSE INCLUDES "include/*.h" "include/*.hpp")
     #枚举源文件
@@ -59,6 +59,8 @@ else()
         #add_library(resources STATIC ${LIBRESOURCES}_linux)
     elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
         message(STATUS "windows")
+        #添加-D
+        add_definitions(-D_CRT_SECURE_NO_WARNINGS)
         add_library(lvgl_win STATIC ${LIBLVGL})
         add_library(drivers_win STATIC ${LIBDRIVERS})
         #add_library(resources STATIC ${LIBRESOURCES}_win)
