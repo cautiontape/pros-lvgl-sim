@@ -1,5 +1,4 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
-#include <windows.h>
 namespace ncrapi {
 void btn_event_cb(lv_obj_t *btn, lv_event_t event)
 {
