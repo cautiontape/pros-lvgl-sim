@@ -13,14 +13,13 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include <SDL2/SDL.h>
 #include <memory>
-#if defined(_WIN32)||defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
 #else
 #include <pthread.h>
 #include <unistd.h>
 #endif
 #include <iostream>
-
 static lv_indev_t *kb_indev;
 void init();
 void autonomous();
