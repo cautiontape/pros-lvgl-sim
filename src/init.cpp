@@ -17,7 +17,7 @@ void init()
     std::cout << "clang" << std::endl;
 #elif defined(_MSC_VER)
     std::cout << "msvc" << std::endl;
-#elif defined(__arm__)
+#elif defined(__ARM_EABI__)
     std::cout << "arm-none-eabi" << std::endl;
 #else
     std::cout << "unkonw compiler" << std::endl;
