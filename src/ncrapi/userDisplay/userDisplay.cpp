@@ -124,38 +124,127 @@ void UserDisplay::createTerminal(lv_obj_t *parent)
     lv_obj_set_pos(loopLab, LV_HOR_RES / 2 + 50, LV_VER_RES - 25);
     lv_label_set_text(loopLab, "");
 }
-
-void UserDisplay::hidenAction(lv_obj_t *btn, lv_event_t event)
+void UserDisplay::createUserObj(obj_flag objname, const char *terminalText, lv_obj_t *parent, const char *labText)
 {
-    (void)btn; /*Unused*/
-    if (event == LV_EVENT_PRESSED)
+    if (displayObj[objname] == nullptr)
     {
-        logger->clearCount();
-        if (lv_obj_get_y(userDisplay->terminal) == 0)
-            lv_obj_set_y(userDisplay->terminal, -210);
+        if (parent == nullptr)
+        {
+            displayObj[objname] = lv_obj_create(lv_scr_act(), nullptr);
+            lv_obj_set_size(displayObj[objname], LV_HOR_RES, LV_VER_RES - 30); //设置页面大小
+            lv_obj_set_y(displayObj[objname], 30);                             //设置位置
+            lv_obj_set_parent(terminal, lv_obj_get_parent(terminal));
+        }
         else
         {
-            lv_obj_set_y(userDisplay->terminal, 0);
-            lv_anim_t b;
-            lv_anim_set_exec_cb(&b, userDisplay->terminal, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
-            lv_anim_set_time(&b, 500, 0);
-            lv_anim_set_values(&b, -210, 0);              /*Set start and end values. E.g. 0, 150*/
-            lv_anim_set_path_cb(&b, lv_anim_path_linear); /*Set path from `lv_anim_path_...` functions or a custom one.*/
-            b.repeat = 0;
-            lv_anim_set_ready_cb(&b, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
-            lv_anim_create(&b);
-            lv_label_set_text(userDisplay->terminalLabs[0], logger->terminalStr[0].c_str());
-            lv_label_set_text(userDisplay->terminalLabs[1], logger->terminalStr[1].c_str());
+            displayObj[objname] = lv_obj_create(parent, nullptr);
+            lv_obj_set_size(displayObj[objname], lv_obj_get_width(parent), lv_obj_get_height(parent));
+            createExitBtn(objname); //退出按钮
+        }
+
+        lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
+        logger->info({"图像类:", terminalText, " 构造成功"});
+    }
+    else
+        logger->debug({"图像类:", terminalText, " 已经存在"});
+
+    if (labText != nullptr)
+    {
+        lv_obj_t *lab = lv_label_create(displayObj[objname], nullptr);
+        lv_label_set_text(lab, labText);
+    }
+}
+/**
+ * 使用LVGLTASK函数创建一个线程
+ * @param taskName 线程名称
+ * @param task 线程函数
+ * @param loopTime  循环时间
+ * @param terminalText 线程名称
+ */
+void UserDisplay::createUserTask(task_flag taskName, lv_task_cb_t task, uint32_t loopTime, const char *terminalText, void *pragma)
+{
+    if (displayTask[taskName] == nullptr)
+    {
+        displayTask[taskName] = lv_task_create(task, loopTime, LV_TASK_PRIO_LOW, pragma);
+        logger->info({"图像类线程:", terminalText, " 构造成功"});
+    }
+    else
+        logger->warnning({"图像类线程:", terminalText, " 已经存在"});
+}
+/**
+ * 删除所有线程 
+ */
+void UserDisplay::delTasks()
+{
+    unsigned int flag = 1;
+    for (auto &it : displayTask)
+    {
+        if (it != nullptr)
+        {
+            lv_task_del(it);
+            it = nullptr;
+            std::cout << "删除图像类线程:" << flag << " 个" << std::endl;
+            flag++;
         }
     }
 }
-void UserDisplay::clearAction(lv_obj_t *btn, lv_event_t event)
+/**
+ * 删除所有对象 
+ */
+void UserDisplay::delObjs()
 {
-    (void)btn;
-    if (event == LV_EVENT_PRESSED)
+    unsigned int flag = 1;
+    for (auto &it : displayObj)
     {
-        logger->terminalStr[lv_tabview_get_tab_act(userDisplay->terminal)].clear();
-        lv_label_set_text(userDisplay->terminalLabs[lv_tabview_get_tab_act(userDisplay->terminal)], "");
+        if (it != nullptr)
+        {
+            lv_obj_del(it);
+            it = nullptr;
+            logger->info({"删除图像类:", std::to_string(flag), " 个"});
+            flag++;
+        }
     }
 }
+
+// void UserDisplay::createMbox(obj_flag objname, const char *txt1, const char *txt2, const char *txt3, lv_btnm_action_t action) //创建一个消息框
+// {
+//     lv_obj_t *mbox = lv_mbox_create(displayObj[objname], nullptr);
+//     lv_mbox_set_text(mbox, txt1);
+//     static const char *btns[] = {txt2, txt3, ""}; /*Button description. '\221' lv_btnm like control char*/
+//     lv_mbox_add_btns(mbox, btns, nullptr);
+//     lv_obj_set_width(mbox, 250);
+//     lv_obj_align(mbox, displayObj[objname], LV_ALIGN_IN_LEFT_MID, 0, 20); /*Align to the corner*/
+//     lv_mbox_set_action(mbox, action);
+// }
+
+// void UserDisplay::createExitBtn(obj_flag objname, const int x, const int y, const int width, const int high) //创建退出按钮
+// {
+//     lv_obj_t *exitBtn = lv_btn_create(displayObj[objname], nullptr);
+//     lv_obj_set_pos(exitBtn, x, y);
+//     lv_obj_set_size(exitBtn, width, high);
+//     lv_obj_t *exitLab = lv_label_create(exitBtn, nullptr);
+//     lv_label_set_text(exitLab, "exit");
+//     lv_btn_set_action(exitBtn, LV_BTN_ACTION_CLICK, closeAction);
+// }
+// void UserDisplay::createSaveBtn(obj_flag objname, const int x, const int y, const int width, const int high) //创建退出按钮
+// {
+//     lv_obj_t *saveBtn = lv_btn_create(displayObj[objname], nullptr);
+//     lv_obj_set_pos(saveBtn, x, y);
+//     lv_obj_set_size(saveBtn, width, high);
+//     lv_obj_t *saveLab = lv_label_create(saveBtn, nullptr);
+//     lv_label_set_text(saveLab, "save");
+//     lv_btn_set_action(saveBtn, LV_BTN_ACTION_CLICK, saveAction);
+//     lv_obj_set_free_ptr(saveBtn, &_tempData);
+// }
+
+// void UserDisplay::createResetBtn(obj_flag objname, const int x, const int y, const int width, const int high)
+// {
+//     //退出重制传感器按钮
+//     lv_obj_t *resetBtn = lv_btn_create(displayObj[objname], nullptr);
+//     lv_obj_set_pos(resetBtn, x, y);
+//     lv_obj_set_size(resetBtn, width, high);
+//     lv_obj_t *resetLab = lv_label_create(resetBtn, nullptr);
+//     lv_label_set_text(resetLab, "reset");
+//     lv_btn_set_action(resetBtn, LV_BTN_ACTION_CLICK, resetAction);
+// }
 } // namespace ncrapi
