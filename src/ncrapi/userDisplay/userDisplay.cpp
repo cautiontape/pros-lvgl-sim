@@ -108,7 +108,7 @@ void UserDisplay::createTerminal(lv_obj_t *parent)
     lv_obj_t *hidenBtn = lv_btn_create(terminal, nullptr);
     lv_obj_set_size(hidenBtn, LV_HOR_RES, 30);
     lv_obj_set_pos(hidenBtn, 0, LV_VER_RES - 30);
-    lv_obj_set_event_cb(clearBtn, hidenAction); //设置动作的通用函数
+    lv_obj_set_event_cb(hidenBtn, hidenAction); //设置动作的通用函数
     //error warnning 指示灯
     logger->errorLabs = lv_label_create(terminal, nullptr);
     lv_obj_set_pos(logger->errorLabs, LV_HOR_RES / 2 - 10, LV_VER_RES - 25);
@@ -136,6 +136,14 @@ void UserDisplay::hidenAction(lv_obj_t *btn, lv_event_t event)
         else
         {
             lv_obj_set_y(userDisplay->terminal, 0);
+            lv_anim_t b;
+            lv_anim_set_exec_cb(&b, userDisplay->terminal, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
+            lv_anim_set_time(&b, 500, 0);
+            lv_anim_set_values(&b, -210, 0);              /*Set start and end values. E.g. 0, 150*/
+            lv_anim_set_path_cb(&b, lv_anim_path_linear); /*Set path from `lv_anim_path_...` functions or a custom one.*/
+            b.repeat = 0;
+            lv_anim_set_ready_cb(&b, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
+            lv_anim_create(&b);
             lv_label_set_text(userDisplay->terminalLabs[0], logger->terminalStr[0].c_str());
             lv_label_set_text(userDisplay->terminalLabs[1], logger->terminalStr[1].c_str());
         }
