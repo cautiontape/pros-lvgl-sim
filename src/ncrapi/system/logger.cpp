@@ -1,7 +1,6 @@
 #include "ncrapi/system/logger.hpp"
 //#include "ncrapi/system/sysUser.hpp"
-#include "ncrapi/userDisplay/userDisplay.hpp"
-
+#include "sim_test/test_config.hpp"
 namespace ncrapi {
 
 #define RESET "\033[0m"
@@ -36,7 +35,7 @@ void Logger::error(std::initializer_list<std::string> val)
     output(val);
     _errorCount++;
 
-    terminalStr[ERROR] += "#FF0000 " + _str + "#\n";
+    terminalStr[ERRORr] += "#FF0000 " + _str + "#\n";
     auto temp2 = "#FF0000 " + std::to_string(_errorCount) + "#";
     if (errorLabs != nullptr)
         lv_label_set_text(errorLabs, temp2.c_str());

@@ -1,5 +1,6 @@
+
 #pragma once
-#include "sim_test/test_config.hpp"
+#include "lvgl/lvgl.h"
 
 namespace ncrapi {
 class UserDisplay

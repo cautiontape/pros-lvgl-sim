@@ -1,13 +1,15 @@
 #pragma once
+#include "lvgl/lvgl.h"
 #include "ncrapi/util/timer.hpp"
-
+#include <memory>
+#include <string>
 namespace ncrapi {
 
 class Logger
 {
   public:
     typedef enum LEVEL {
-        ERROR = 0,
+        ERROR,
         WARNNING,
         DEBUG,
         INFO
@@ -61,7 +63,7 @@ class Logger
 };
 } // namespace ncrapi
 extern std::unique_ptr<ncrapi::Logger> logger;
-static void taskLogger(void *para)
-{
-    logger->loop();
-}
+// static void taskLogger(void *para)
+// {
+//     logger->loop();
+// }

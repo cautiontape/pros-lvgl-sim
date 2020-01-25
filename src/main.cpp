@@ -1,5 +1,5 @@
 #include "main.hpp"
-
+#if (TEST_MODE == 1)
 int main(int argc, char **argv)
 {
 
@@ -30,3 +30,8 @@ int main(int argc, char **argv)
     }
     return 0;
 }
+#else
+void opcontrol()
+{
+}
+#endif
