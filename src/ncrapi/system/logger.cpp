@@ -35,12 +35,11 @@ void Logger::error(std::initializer_list<std::string> val)
 {
     output(val);
     _errorCount++;
-    if (userDisplay != nullptr)
-    {
-        terminalStr[ERROR] += "#FF0000 " + _str + "#\n";
-        auto temp2 = "#FF0000 " + std::to_string(_errorCount) + "#";
-        lv_label_set_text(userDisplay->errorLabs, temp2.c_str());
-    }
+
+    terminalStr[ERROR] += "#FF0000 " + _str + "#\n";
+    auto temp2 = "#FF0000 " + std::to_string(_errorCount) + "#";
+    if (errorLabs != nullptr)
+        lv_label_set_text(errorLabs, temp2.c_str());
     if (!isComp)
         std::cout << RED << _str << std::endl;
 }
@@ -48,12 +47,11 @@ void Logger::warnning(std::initializer_list<std::string> val)
 {
     output(val);
     _warnningCount++;
-    if (userDisplay != nullptr)
-    {
-        terminalStr[WARNNING] += "#CCFF00 " + _str + "#\n";
-        auto temp2 = "#CCFF00 " + std::to_string(_warnningCount) + "#";
-        lv_label_set_text(userDisplay->warnningLabs, temp2.c_str());
-    }
+
+    terminalStr[WARNNING] += "#CCFF00 " + _str + "#\n";
+    auto temp2 = "#CCFF00 " + std::to_string(_warnningCount) + "#";
+    if (warnningLabs != nullptr)
+        lv_label_set_text(warnningLabs, temp2.c_str());
     if (!isComp)
         std::cout << YELLOW << _str << std::endl;
 }
@@ -77,8 +75,8 @@ void Logger::clearCount()
 {
     _errorCount = 0;
     _warnningCount = 0;
-    lv_label_set_text(userDisplay->errorLabs, "#FF0000 0#");
-    lv_label_set_text(userDisplay->warnningLabs, "#CCFF00 0#");
+    lv_label_set_text(errorLabs, "#FF0000 0#");
+    lv_label_set_text(warnningLabs, "#CCFF00 0#");
 }
 void Logger::output(std::initializer_list<std::string> &val)
 {
@@ -88,29 +86,29 @@ void Logger::output(std::initializer_list<std::string> &val)
     for (auto &it : val)
         _str += it;
 }
-void Logger::loop()
-{
-    uint32_t now = pros::millis();
-    Timer timer;
-    while (true)
-    {
+// void Logger::loop()
+// {
+//     uint32_t now = pros::millis();
+//     Timer timer;
+//     while (true)
+//     {
 
-        for (auto &it : sysData->obj) //遍历项目名字
-        {
-            timer.placeHardMark();
-            if (timer.getDtFromHardMark() > 15000_ms)
-            {
-                for (int i = 0; i < it->getMotorInfo().size(); i++)
-                {
-                    if (it->getMotorInfo()[i].get_temperature() > 50)
-                        error({it->showName(), "[", std::to_string(it->getMotorInfo()[i].get_port()), "]号马达过热!"});
-                }
-                timer.clearHardMark();
-            }
-            if (it->isSafeMode())
-                logger->warnning({it->showName(), ":进入热保模式!请注意操作"});
-        }
-        pros::Task::delay_until(&now, 1000);
-    }
-}
+//         for (auto &it : sysData->obj) //遍历项目名字
+//         {
+//             timer.placeHardMark();
+//             if (timer.getDtFromHardMark() > 15000_ms)
+//             {
+//                 for (int i = 0; i < it->getMotorInfo().size(); i++)
+//                 {
+//                     if (it->getMotorInfo()[i].get_temperature() > 50)
+//                         error({it->showName(), "[", std::to_string(it->getMotorInfo()[i].get_port()), "]号马达过热!"});
+//                 }
+//                 timer.clearHardMark();
+//             }
+//             if (it->isSafeMode())
+//                 logger->warnning({it->showName(), ":进入热保模式!请注意操作"});
+//         }
+//         pros::Task::delay_until(&now, 1000);
+//     }
+// }
 } // namespace ncrapi

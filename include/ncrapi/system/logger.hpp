@@ -50,6 +50,9 @@ class Logger
     void loop();
     std::string terminalStr[2];
 
+  protected:
+    lv_obj_t *errorLabs = nullptr, *warnningLabs = nullptr; //控制台上的显示错误数量的lab
+
   private:
     bool isComp = false;
     void output(std::initializer_list<std::string> &val);

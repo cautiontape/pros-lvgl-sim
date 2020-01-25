@@ -1,6 +1,6 @@
 #include "main.hpp"
 std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
-void init()
+void initialize()
 {
 #if defined(_WIN32)
     std::cout << "win32" << std::endl;

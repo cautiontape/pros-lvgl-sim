@@ -1,20 +1,22 @@
 #pragma once
+#include "ncrapi/ncrapi.hpp"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+void autonomous(void);
+void initialize(void);
+void disabled(void);
+void competition_initialize(void);
+void opcontrol(void);
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 /**
- * @file main
- *
+ * You can add C++-only headers here
  */
 
-/*********************
- *      INCLUDES
- *********************/
-#include "lv_drivers/display/monitor.h"
-#include "lv_drivers/indev/keyboard.h"
-#include "lv_drivers/indev/mouse.h"
-#include "ncrapi/userDisplay/userDisplay.hpp"
-#include <SDL2/SDL.h>
-#include <memory>
-
-static lv_indev_t *kb_indev;
-
-void init();
-void autonomous();
+//#include <iostream>
+#endif
