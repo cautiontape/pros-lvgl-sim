@@ -7,6 +7,7 @@
 // #include "ncrapi/robotSet.hpp"
 // #include "ncrapi/system/sysUser.hpp"
 // #include "ncrapi/system/visionData.hpp"
+#include "ncrapi/system/logger.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include "sim_test/test_config.hpp"
 

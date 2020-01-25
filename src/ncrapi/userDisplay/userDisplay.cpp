@@ -1,5 +1,7 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
+#include "ncrapi/system/logger.hpp"
 #include "sim_test/test_config.hpp"
+
 namespace ncrapi {
 void btn_event_cb(lv_obj_t *btn, lv_event_t event)
 {
@@ -32,52 +34,11 @@ void btn_event_cb(lv_obj_t *btn, lv_event_t event)
 }
 UserDisplay::UserDisplay()
 {
-    lv_obj_t *slider1 = lv_slider_create(lv_scr_act(), NULL);
-    lv_obj_set_x(slider1, 30);
-    lv_obj_set_y(slider1, 10);
-    lv_obj_set_size(slider1, 200, 50);
-    lv_slider_set_value(slider1, 70, LV_ANIM_ON);
-    static lv_style_t style1;                        /*Declare a new style. Should be `static`*/
-    lv_style_copy(&style1, &lv_style_plain);         /*Copy a buil-in style*/
-    style1.body.main_color = LV_COLOR_RED;           /*Main color*/
-    style1.body.grad_color = lv_color_hex(0xffd83c); /*Gradient color (orange)*/
-    style1.body.radius = 3;
-    style1.text.color = lv_color_hex3(0x0F0); /*Label color (green)*/
-    style1.text.font = &ncr_font10;           /*Change font*/
-    lv_slider_set_style(slider1, LV_SLIDER_STYLE_BG, &style1);
-    lv_slider_set_style(slider1, LV_SLIDER_STYLE_INDIC, &style1);
-    lv_slider_set_style(slider1, LV_SLIDER_STYLE_KNOB, &style1);
-    lv_obj_set_event_cb(slider1, btn_event_cb); //设置动作的通用函数
-
-    lv_obj_t *btn = lv_btn_create(lv_scr_act(), NULL); /*Add a button the current screen*/
-    lv_obj_set_pos(btn, 10, 10);                       /*Set its position*/
-    lv_obj_set_size(btn, 100, 50);                     /*Set its size*/
-    lv_obj_set_event_cb(btn, btn_event_cb);            /*Assign a callback to the button*/
-
-    lv_obj_t *label = lv_label_create(btn, NULL); /*Add a label to the button*/
-    lv_label_set_style(label, LV_LABEL_STYLE_MAIN, &style1);
-    lv_label_set_text(label, "按钮1");              /*Set the labels text*/
-    static lv_style_t style_btn_rel;                /*A variable to store the released style*/
-    lv_style_copy(&style_btn_rel, &lv_style_plain); /*Initialize from a built-in style*/
-    style_btn_rel.body.border.color = lv_color_hex3(0x269);
-    style_btn_rel.body.border.width = 1;
-    style_btn_rel.body.main_color = lv_color_hex3(0xADF);
-    style_btn_rel.body.grad_color = lv_color_hex3(0x46B);
-    style_btn_rel.body.shadow.width = 4;
-    style_btn_rel.body.shadow.type = LV_SHADOW_BOTTOM;
-    style_btn_rel.body.radius = LV_RADIUS_CIRCLE;
-    style_btn_rel.text.color = lv_color_hex3(0xDEF);
-
-    static lv_style_t style_btn_pr;               /*A variable to store the pressed style*/
-    lv_style_copy(&style_btn_pr, &style_btn_rel); /*Initialize from the released style*/
-    style_btn_pr.body.border.color = lv_color_hex3(0x46B);
-    style_btn_pr.body.main_color = lv_color_hex3(0x8BD);
-    style_btn_pr.body.grad_color = lv_color_hex3(0x24A);
-    style_btn_pr.body.shadow.width = 2;
-    style_btn_pr.text.color = lv_color_hex3(0xBCD);
-
-    lv_btn_set_style(btn, LV_BTN_STYLE_REL, &style_btn_rel); /*Set the button's released style*/
-    lv_btn_set_style(btn, LV_BTN_STYLE_PR, &style_btn_pr);   /*Set the button's pressed style*/
+    /*初始化外星人主题*/
+    theme = lv_theme_alien_init(100, &ncr_font10);
+    lv_theme_set_current(theme);
+    //创建控制台
+    createTerminal(lv_scr_act());
 
     lv_obj_t *icon = lv_img_create(lv_scr_act(), NULL);
     lv_img_set_src(icon, &logo);
@@ -91,5 +52,84 @@ UserDisplay::UserDisplay()
     lv_anim_set_ready_cb(&a, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
     //lv_anim_set_repeat(&a, wait_time);            /*Enable repeat of teh animation with `wait_time` delay. Can be compiled with playback*/
     lv_anim_create(&a); /*Start the animation*/
+}
+void UserDisplay::createTerminal(lv_obj_t *parent)
+{
+    std::vector<std::string> Level = {"错误", "警告"};
+    //创建终端
+    terminal = lv_tabview_create(parent, nullptr);
+    lv_obj_set_size(terminal, LV_HOR_RES, LV_VER_RES); //设置页面大小
+    for (auto &it : Level)
+    {
+        lv_obj_t *tabs = lv_tabview_add_tab(terminal, it.c_str());
+        terminalLabs.push_back(lv_label_create(tabs, nullptr));
+        lv_label_set_text(terminalLabs.back(), "");
+        lv_label_set_recolor(terminalLabs.back(), true);
+    }
+    terminalStyle = *lv_obj_get_style(terminal);
+    lv_obj_set_style(terminal, &terminalStyle);
+    lv_obj_t *clearBtn = lv_btn_create(terminal, nullptr);
+    lv_obj_set_size(clearBtn, 50, 25);
+    lv_obj_align(clearBtn, terminal, LV_ALIGN_IN_TOP_RIGHT, -10, 30);
+    lv_obj_t *btnLab = lv_label_create(clearBtn, nullptr);
+    lv_label_set_text(btnLab, "clear");
+    lv_obj_set_event_cb(clearBtn, clearAction); //设置动作的通用函数
+
+    lv_obj_set_parent(terminal, lv_obj_get_parent(terminal));
+    //设置TERMINAL上的按钮
+    lv_obj_t *hidenBtn = lv_btn_create(terminal, nullptr);
+    lv_obj_set_size(hidenBtn, LV_HOR_RES, 30);
+    lv_obj_set_pos(hidenBtn, 0, LV_VER_RES - 30);
+    lv_obj_set_event_cb(clearBtn, hidenAction); //设置动作的通用函数
+    //error warnning 指示灯
+    logger->errorLabs = lv_label_create(terminal, nullptr);
+    lv_obj_set_pos(logger->errorLabs, LV_HOR_RES / 2 - 10, LV_VER_RES - 25);
+    lv_label_set_recolor(logger->errorLabs, true);
+    lv_label_set_text(logger->errorLabs, "#FF0000 0#");
+    logger->warnningLabs = lv_label_create(terminal, nullptr);
+    lv_obj_set_pos(logger->warnningLabs, LV_HOR_RES / 2 + 15, LV_VER_RES - 25);
+    lv_label_set_recolor(logger->warnningLabs, true);
+    lv_label_set_text(logger->warnningLabs, "#CCFF00 0#");
+
+    //循环时间条
+    loopLab = lv_label_create(terminal, nullptr);
+    lv_obj_set_pos(loopLab, LV_HOR_RES / 2 + 50, LV_VER_RES - 25);
+    lv_label_set_text(loopLab, "");
+}
+
+void UserDisplay::hidenAction(lv_obj_t *btn, lv_event_t event)
+{
+    (void)btn; /*Unused*/
+    if (event == LV_EVENT_PRESSED)
+    {
+        logger->clearCount();
+        if (lv_obj_get_y(userDisplay->terminal) == 0)
+            lv_obj_set_y(userDisplay->terminal, -210);
+        else
+        {
+            lv_obj_set_y(userDisplay->terminal, 0);
+
+            lv_anim_t b;
+            lv_anim_set_exec_cb(&b, userDisplay->terminal, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
+            lv_anim_set_time(&b, 500, 0);
+            lv_anim_set_values(&b, -210, 0);              /*Set start and end values. E.g. 0, 150*/
+            lv_anim_set_path_cb(&b, lv_anim_path_linear); /*Set path from `lv_anim_path_...` functions or a custom one.*/
+            b.repeat = 0;
+            lv_anim_set_ready_cb(&b, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
+            lv_anim_create(&b);                                        /*Start the animation*/
+
+            lv_label_set_text(userDisplay->terminalLabs[0], logger->terminalStr[0].c_str());
+            lv_label_set_text(userDisplay->terminalLabs[1], logger->terminalStr[1].c_str());
+        }
+    }
+}
+void UserDisplay::clearAction(lv_obj_t *btn, lv_event_t event)
+{
+    (void)btn;
+    if (event == LV_EVENT_PRESSED)
+    {
+        logger->terminalStr[lv_tabview_get_tab_act(userDisplay->terminal)].clear();
+        lv_label_set_text(userDisplay->terminalLabs[lv_tabview_get_tab_act(userDisplay->terminal)], "");
+    }
 }
 } // namespace ncrapi

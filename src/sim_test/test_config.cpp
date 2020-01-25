@@ -10,7 +10,7 @@ namespace competition {
  */
 std::uint8_t get_status(void)
 {
-    return 0;
+    return (1 << 2);
 }
 
 std::uint8_t is_autonomous(void)

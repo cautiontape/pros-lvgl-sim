@@ -51,8 +51,6 @@ class Logger
      */
     void loop();
     std::string terminalStr[2];
-
-  protected:
     lv_obj_t *errorLabs = nullptr, *warnningLabs = nullptr; //控制台上的显示错误数量的lab
 
   private:
@@ -63,7 +61,7 @@ class Logger
 };
 } // namespace ncrapi
 extern std::unique_ptr<ncrapi::Logger> logger;
-// static void taskLogger(void *para)
-// {
-//     logger->loop();
-// }
+static void taskLogger(void *para)
+{
+    logger->loop();
+}

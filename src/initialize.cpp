@@ -1,5 +1,7 @@
 #include "main.hpp"
+std::unique_ptr<ncrapi::Logger> logger = nullptr; //系统日志
 std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
+
 void initialize()
 {
 #if defined(_WIN32)
@@ -22,6 +24,9 @@ void initialize()
 #else
     std::cout << "unkonw compiler" << std::endl;
 #endif
+    //系统日志初始化
+    logger = std::make_unique<ncrapi::Logger>();
+    //显示初始化
     userDisplay = std::make_unique<ncrapi::UserDisplay>();
 }
 void competition_initialize()
