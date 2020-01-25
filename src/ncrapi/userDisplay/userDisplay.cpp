@@ -36,22 +36,50 @@ UserDisplay::UserDisplay()
 {
     /*初始化外星人主题*/
     theme = lv_theme_alien_init(100, &ncr_font10);
+    //设置 tabview样式
+    theme->style.tabview.indic->body.padding.inner = 1;    /*滚动条宽*/
+    theme->style.tabview.btn.rel->text.font = &ncr_font10; //重新设置字体
+    theme->style.tabview.indic->body.padding.bottom = 1;
+    theme->style.tabview.indic->body.padding.top = 1;
+    theme->style.tabview.indic->body.padding.left = 1;
+    theme->style.tabview.indic->body.padding.right = 1;
+    theme->style.tabview.btn.rel->body.padding.left = 1;   //释放按钮的垂直填充应用于所有按钮
+    theme->style.tabview.btn.rel->body.padding.right = 1;  //释放按钮的垂直填充应用于所有按钮
+    theme->style.tabview.btn.rel->body.padding.top = 1;    //释放按钮的垂直填充应用于所有按钮
+    theme->style.tabview.btn.rel->body.padding.bottom = 1; //释放按钮的垂直填充应用于所有按钮
+    theme->style.tabview.bg->body.padding.left = 1;        //背景上下填充
+    theme->style.tabview.bg->body.padding.right = 1;       //背景左右填充
+    theme->style.tabview.bg->body.padding.top = 1;         //背景上下填充
+    theme->style.tabview.bg->body.padding.bottom = 1;      //背景左右填充
+    theme->style.tabview.bg->body.border.width = 1;
+    theme->style.tabview.bg->body.padding.inner = 8; /*滚动条宽*/
     lv_theme_set_current(theme);
+    //全局样式
+    lv_style_copy(&mainStyle, &lv_style_pretty_color); //拷贝当前按钮样式
+    mainStyle.text.font = &ncr_font10;
+    mainStyle.body.padding.left = 5;
+    mainStyle.body.padding.right = 5;
+    mainStyle.body.padding.top = 5;
+    mainStyle.body.padding.bottom = 5;
+    mainStyle.body.grad_color = LV_COLOR_BLACK; //渐变色黑色
+
     //创建控制台
     createTerminal(lv_scr_act());
-
-    lv_obj_t *icon = lv_img_create(lv_scr_act(), NULL);
-    lv_img_set_src(icon, &logo);
+    //设置LOGO
+    logoObj = lv_img_create(terminal, nullptr);
+    lv_img_set_src(logoObj, &logo);
     lv_anim_t a;
-    lv_obj_set_x(icon, LV_HOR_RES_MAX - lv_obj_get_width(icon));
-    lv_anim_set_exec_cb(&a, icon, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
+    lv_obj_set_x(logoObj, LV_HOR_RES_MAX - lv_obj_get_width(logoObj));
+    lv_anim_set_exec_cb(&a, logoObj, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
     lv_anim_set_time(&a, 5000, 0);
-    lv_anim_set_values(&a, -lv_obj_get_height(icon), (LV_VER_RES_MAX - lv_obj_get_height(icon)) / 2); /*Set start and end values. E.g. 0, 150*/
-    lv_anim_set_path_cb(&a, lv_anim_path_bounce);                                                     /*Set path from `lv_anim_path_...` functions or a custom one.*/
+    lv_anim_set_values(&a, -lv_obj_get_height(logoObj), (LV_VER_RES_MAX - lv_obj_get_height(logoObj)) / 2); /*Set start and end values. E.g. 0, 150*/
+    lv_anim_set_path_cb(&a, lv_anim_path_bounce);                                                           /*Set path from `lv_anim_path_...` functions or a custom one.*/
     a.repeat = 0;
     lv_anim_set_ready_cb(&a, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
-    //lv_anim_set_repeat(&a, wait_time);            /*Enable repeat of teh animation with `wait_time` delay. Can be compiled with playback*/
-    lv_anim_create(&a); /*Start the animation*/
+    lv_anim_create(&a);                                        /*Start the animation*/
+
+    //应用全局样式
+    logger->info({"图像类构造成功"});
 }
 void UserDisplay::createTerminal(lv_obj_t *parent)
 {
@@ -108,16 +136,6 @@ void UserDisplay::hidenAction(lv_obj_t *btn, lv_event_t event)
         else
         {
             lv_obj_set_y(userDisplay->terminal, 0);
-
-            lv_anim_t b;
-            lv_anim_set_exec_cb(&b, userDisplay->terminal, (lv_anim_exec_xcb_t)lv_obj_set_y); /*Set the animator function and variable to animate*/
-            lv_anim_set_time(&b, 500, 0);
-            lv_anim_set_values(&b, -210, 0);              /*Set start and end values. E.g. 0, 150*/
-            lv_anim_set_path_cb(&b, lv_anim_path_linear); /*Set path from `lv_anim_path_...` functions or a custom one.*/
-            b.repeat = 0;
-            lv_anim_set_ready_cb(&b, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
-            lv_anim_create(&b);                                        /*Start the animation*/
-
             lv_label_set_text(userDisplay->terminalLabs[0], logger->terminalStr[0].c_str());
             lv_label_set_text(userDisplay->terminalLabs[1], logger->terminalStr[1].c_str());
         }
