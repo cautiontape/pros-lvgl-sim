@@ -23,14 +23,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#if defined(_WIN32) || defined(_WIN64)
-#include <Windows.h>
-#elif (_linux)
-#include <pthread.h>
-#include <unistd.h>
-#else
-std::cout << "unkonw compiler" << std::endl;
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,24 +55,24 @@ namespace pros {
 // The maximum timeout value that can be given to, for instance, a mutex grab.
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
-typedef void *task_t;
-typedef void (*task_fn_t)(void *);
+typedef void* task_t;
+typedef void (*task_fn_t)(void*);
 
 typedef enum {
-    E_TASK_STATE_RUNNING = 0,
-    E_TASK_STATE_READY,
-    E_TASK_STATE_BLOCKED,
-    E_TASK_STATE_SUSPENDED,
-    E_TASK_STATE_DELETED,
-    E_TASK_STATE_INVALID
+	E_TASK_STATE_RUNNING = 0,
+	E_TASK_STATE_READY,
+	E_TASK_STATE_BLOCKED,
+	E_TASK_STATE_SUSPENDED,
+	E_TASK_STATE_DELETED,
+	E_TASK_STATE_INVALID
 } task_state_e_t;
 
 typedef enum {
-    E_NOTIFY_ACTION_NONE,
-    E_NOTIFY_ACTION_BITS,
-    E_NOTIFY_ACTION_INCR,
-    E_NOTIFY_ACTION_OWRITE,
-    E_NOTIFY_ACTION_NO_OWRITE
+	E_NOTIFY_ACTION_NONE,
+	E_NOTIFY_ACTION_BITS,
+	E_NOTIFY_ACTION_INCR,
+	E_NOTIFY_ACTION_OWRITE,
+	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -111,7 +103,7 @@ typedef enum {
 #endif
 #endif
 
-typedef void *mutex_t;
+typedef void* mutex_t;
 
 /**
  * Refers to the current task handle
@@ -131,18 +123,7 @@ namespace c {
  *
  * \return The number of milliseconds since PROS initialized
  */
-#if defined(_WIN32) || defined(_WIN64)
-uint32_t millis()
-{
-    return GetTickCount();
-}
-#elif defined(_linux)
 uint32_t millis(void);
-#elif defined(__ARM_EABI__)
-uint32_t millis(void);
-#else
-std::cout << "unkonw compiler" << std::endl;
-#endif
 
 /**
  * Creates a new task and add it to the list of tasks that are ready to run.
@@ -171,8 +152,8 @@ std::cout << "unkonw compiler" << std::endl;
  * error occurred, NULL will be returned and errno can be checked for hints as
  * to why task_create failed.
  */
-task_t task_create(task_fn_t function, void *const parameters, uint32_t prio, const uint16_t stack_depth,
-                   const char *const name);
+task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, const uint16_t stack_depth,
+                   const char* const name);
 
 /**
  * Removes a task from the RTOS real time kernel's management. The task being
@@ -214,7 +195,7 @@ void delay(const uint32_t milliseconds);
  * \param delta
  *        The number of milliseconds to wait (1000 milliseconds per second)
  */
-void task_delay_until(uint32_t *const prev_time, const uint32_t delta);
+void task_delay_until(uint32_t* const prev_time, const uint32_t delta);
 
 /**
  * Gets the priority of the specified task.
@@ -284,7 +265,7 @@ uint32_t task_get_count(void);
  *
  * \return A pointer to the name of the task
  */
-char *task_get_name(task_t task);
+char* task_get_name(task_t task);
 
 /**
  * Gets a task handle from the specified name
@@ -296,7 +277,7 @@ char *task_get_name(task_t task);
  *
  * \return A task handle with a matching name, or NULL if none were found.
  */
-task_t task_get_by_name(const char *name);
+task_t task_get_by_name(const char* name);
 
 /**
  * Get the currently running task handle. This could be useful if a task
@@ -343,7 +324,7 @@ uint32_t task_notify(task_t task);
  * needing to overwrite, 1 otherwise.
  * For all other NOTIFY_ACTION values: always return 0
  */
-uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t *prev_value);
+uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
 /**
  * Waits for a notification to be nonzero.
@@ -423,9 +404,9 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
 bool mutex_give(mutex_t mutex);
 
 #ifdef __cplusplus
-} // namespace c
-} // namespace pros
+}  // namespace c
+}  // namespace pros
 }
 #endif
 
-#endif // _PROS_RTOS_H_
+#endif  // _PROS_RTOS_H_

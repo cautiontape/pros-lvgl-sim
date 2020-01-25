@@ -1,10 +1,7 @@
 #include "ncrapi/system/logger.hpp"
 //#include "ncrapi/system/sysUser.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
-#include "pros/misc.hpp"
-#include "pros/rtos.hpp"
-#include <cstdlib>
-#include <iostream>
+
 namespace ncrapi {
 
 #define RESET "\033[0m"

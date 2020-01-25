@@ -15,8 +15,6 @@
 #include <memory>
 
 static lv_indev_t *kb_indev;
-extern "C" {
-LV_IMG_DECLARE(mouse_cursor_icon); /*Declare the image file.*/
-}
+
 void init();
 void autonomous();

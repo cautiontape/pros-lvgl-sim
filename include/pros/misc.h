@@ -61,28 +61,29 @@ extern "C" {
 namespace pros {
 #endif
 
-typedef enum { E_CONTROLLER_MASTER = 0, E_CONTROLLER_PARTNER } controller_id_e_t;
+typedef enum { E_CONTROLLER_MASTER = 0,
+               E_CONTROLLER_PARTNER } controller_id_e_t;
 
 typedef enum {
-	E_CONTROLLER_ANALOG_LEFT_X = 0,
-	E_CONTROLLER_ANALOG_LEFT_Y,
-	E_CONTROLLER_ANALOG_RIGHT_X,
-	E_CONTROLLER_ANALOG_RIGHT_Y
+    E_CONTROLLER_ANALOG_LEFT_X = 0,
+    E_CONTROLLER_ANALOG_LEFT_Y,
+    E_CONTROLLER_ANALOG_RIGHT_X,
+    E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
 typedef enum {
-	E_CONTROLLER_DIGITAL_L1 = 6,
-	E_CONTROLLER_DIGITAL_L2,
-	E_CONTROLLER_DIGITAL_R1,
-	E_CONTROLLER_DIGITAL_R2,
-	E_CONTROLLER_DIGITAL_UP,
-	E_CONTROLLER_DIGITAL_DOWN,
-	E_CONTROLLER_DIGITAL_LEFT,
-	E_CONTROLLER_DIGITAL_RIGHT,
-	E_CONTROLLER_DIGITAL_X,
-	E_CONTROLLER_DIGITAL_B,
-	E_CONTROLLER_DIGITAL_Y,
-	E_CONTROLLER_DIGITAL_A
+    E_CONTROLLER_DIGITAL_L1 = 6,
+    E_CONTROLLER_DIGITAL_L2,
+    E_CONTROLLER_DIGITAL_R1,
+    E_CONTROLLER_DIGITAL_R2,
+    E_CONTROLLER_DIGITAL_UP,
+    E_CONTROLLER_DIGITAL_DOWN,
+    E_CONTROLLER_DIGITAL_LEFT,
+    E_CONTROLLER_DIGITAL_RIGHT,
+    E_CONTROLLER_DIGITAL_X,
+    E_CONTROLLER_DIGITAL_B,
+    E_CONTROLLER_DIGITAL_Y,
+    E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -281,7 +282,7 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...);
+int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char *fmt, ...);
 
 /**
  * Sets text to the controller LCD screen.
@@ -308,7 +309,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str);
+int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char *str);
 
 /**
  * Clears an individual line of the controller screen.
@@ -378,7 +379,7 @@ int32_t controller_clear(controller_id_e_t id);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
+int32_t controller_rumble(controller_id_e_t id, const char *rumble_pattern);
 
 /**
  * Gets the current voltage of the battery, as reported by VEXos.
@@ -437,4 +438,4 @@ int32_t usd_is_installed(void);
 }
 #endif
 
-#endif  // _PROS_MISC_H_
+#endif // _PROS_MISC_H_
