@@ -4,30 +4,18 @@ std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
 
 void initialize()
 {
-#if defined(_WIN32)
-    std::cout << "win32" << std::endl;
-#elif defined(_WIN64)
-    std::cout << "win64" << std::endl;
-#elif defined(__linux)
-    std::cout << "linux" << std::endl;
-#else
-    std::cout << "unkonw system" << std::endl;
-#endif
-#if defined(__GNUC__)
-    std::cout << "gcc" << std::endl;
-#elif defined(__clang__)
-    std::cout << "clang" << std::endl;
-#elif defined(_MSC_VER)
-    std::cout << "msvc" << std::endl;
-#elif defined(__ARM_EABI__)
-    std::cout << "arm-none-eabi" << std::endl;
-#else
-    std::cout << "unkonw compiler" << std::endl;
-#endif
+
     //系统日志初始化
     logger = std::make_unique<ncrapi::Logger>();
     //显示初始化
     userDisplay = std::make_unique<ncrapi::UserDisplay>();
+#if defined(__clang__) || defined(_MSC_VER)
+    Sleep(5000); /*Just to let the system breath*/
+#elif defined(__GNUC__)
+    usleep(1000);
+#else
+#endif
+    lv_obj_del(userDisplay->logoObj);
 }
 void competition_initialize()
 {

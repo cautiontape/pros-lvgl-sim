@@ -115,10 +115,6 @@ void hal_init(void)
 DWORD WINAPI task1(LPVOID pragma)
 {
     (void)pragma;
-    /*Initialize LittlevGL*/
-    lv_init();
-    /*Initialize the HAL (display, input devices, tick) for LittlevGL*/
-    hal_init();
     while (1)
     {
         /* Periodically call the lv_task handler.
@@ -131,10 +127,6 @@ DWORD WINAPI task1(LPVOID pragma)
 void *task1(void *pragma)
 {
     (void)pragma;
-    /*Initialize LittlevGL*/
-    lv_init();
-    /*Initialize the HAL (display, input devices, tick) for LittlevGL*/
-    hal_init();
     while (1)
     {
         /* Periodically call the lv_task handler.
