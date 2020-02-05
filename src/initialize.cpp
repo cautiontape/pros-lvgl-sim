@@ -31,7 +31,7 @@ void initialize()
 }
 void competition_initialize()
 {
-    userDisplay->createCompe();
+    // userDisplay->createCompe();
 }
 /**
  * 场控没开自动赛 没开手动 完全禁止的时候使用的函数
