@@ -61,7 +61,7 @@ class Logger
 };
 } // namespace ncrapi
 extern std::unique_ptr<ncrapi::Logger> logger;
-static void taskLogger(void *para)
-{
-    logger->loop();
-}
+// static void taskLogger(void *para)
+// {
+//     logger->loop();
+// }

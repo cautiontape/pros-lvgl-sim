@@ -28,7 +28,15 @@ std::uint8_t is_disabled(void)
 } // namespace competition
 uint32_t millis(void)
 {
+#if defined(_WIN32) || defined(_WIN64)
     return GetTickCount();
+#elif defined(__linux)
+    struct timespec ts;
+
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+#endif
 }
 } // namespace pros
   /**

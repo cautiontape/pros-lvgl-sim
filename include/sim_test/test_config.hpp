@@ -16,7 +16,7 @@ LV_FONT_DECLARE(ncr_font10);
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
 #define TEST_MODE 1
-#elif (_linux)
+#elif (__linux)
 #include <pthread.h>
 #include <unistd.h>
 #define TEST_MODE 1
@@ -78,7 +78,7 @@ extern void hal_init(void);
 DWORD WINAPI task1(LPVOID pragma);
 #else
 void *task1(void *pragma);
-}
+
 #endif
 
 #endif

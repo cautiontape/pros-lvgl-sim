@@ -35,7 +35,7 @@ void Logger::error(std::initializer_list<std::string> val)
     output(val);
     _errorCount++;
 
-    terminalStr[ERRORr] += "#FF0000 " + _str + "#\n";
+    terminalStr[ERROR] += "#FF0000 " + _str + "#\n";
     auto temp2 = "#FF0000 " + std::to_string(_errorCount) + "#";
     if (errorLabs != nullptr)
         lv_label_set_text(errorLabs, temp2.c_str());

@@ -8,7 +8,7 @@ void initialize()
     std::cout << "win32" << std::endl;
 #elif defined(_WIN64)
     std::cout << "win64" << std::endl;
-#elif defined(_linux)
+#elif defined(__linux)
     std::cout << "linux" << std::endl;
 #else
     std::cout << "unkonw system" << std::endl;
