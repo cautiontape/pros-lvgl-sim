@@ -126,33 +126,33 @@ void UserDisplay::createTerminal(lv_obj_t *parent)
 }
 void UserDisplay::createUserObj(obj_flag objname, const char *terminalText, lv_obj_t *parent, const char *labText)
 {
-    if (displayObj[objname] == nullptr)
-    {
-        if (parent == nullptr)
-        {
-            displayObj[objname] = lv_obj_create(lv_scr_act(), nullptr);
-            lv_obj_set_size(displayObj[objname], LV_HOR_RES, LV_VER_RES - 30); //设置页面大小
-            lv_obj_set_y(displayObj[objname], 30);                             //设置位置
-            lv_obj_set_parent(terminal, lv_obj_get_parent(terminal));
-        }
-        else
-        {
-            displayObj[objname] = lv_obj_create(parent, nullptr);
-            lv_obj_set_size(displayObj[objname], lv_obj_get_width(parent), lv_obj_get_height(parent));
-            createExitBtn(objname); //退出按钮
-        }
+    // if (displayObj[objname] == nullptr)
+    // {
+    //     if (parent == nullptr)
+    //     {
+    //         displayObj[objname] = lv_obj_create(lv_scr_act(), nullptr);
+    //         lv_obj_set_size(displayObj[objname], LV_HOR_RES, LV_VER_RES - 30); //设置页面大小
+    //         lv_obj_set_y(displayObj[objname], 30);                             //设置位置
+    //         lv_obj_set_parent(terminal, lv_obj_get_parent(terminal));
+    //     }
+    //     else
+    //     {
+    //         displayObj[objname] = lv_obj_create(parent, nullptr);
+    //         lv_obj_set_size(displayObj[objname], lv_obj_get_width(parent), lv_obj_get_height(parent));
+    //         createExitBtn(objname); //退出按钮
+    //     }
 
-        lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
-        logger->info({"图像类:", terminalText, " 构造成功"});
-    }
-    else
-        logger->debug({"图像类:", terminalText, " 已经存在"});
+    //     lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
+    //     logger->info({"图像类:", terminalText, " 构造成功"});
+    // }
+    // else
+    //     logger->debug({"图像类:", terminalText, " 已经存在"});
 
-    if (labText != nullptr)
-    {
-        lv_obj_t *lab = lv_label_create(displayObj[objname], nullptr);
-        lv_label_set_text(lab, labText);
-    }
+    // if (labText != nullptr)
+    // {
+    //     lv_obj_t *lab = lv_label_create(displayObj[objname], nullptr);
+    //     lv_label_set_text(lab, labText);
+    // }
 }
 /**
  * 使用LVGLTASK函数创建一个线程
