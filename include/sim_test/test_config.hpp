@@ -75,9 +75,11 @@ extern void memory_monitor(lv_task_t *param);
 extern int tick_thread(void *data);
 extern void hal_init(void);
 #if defined(_WIN32) || defined(_WIN64)
-DWORD WINAPI task1(LPVOID pragma);
+DWORD WINAPI taskLVGL(LPVOID pragma);
+DWORD WINAPI taskKeyBoard(LPVOID pragma);
 #else
-void *task1(void *pragma);
+void *taskLVGL(void *pragma);
+void *taskKeyBoard(void *pragma);
 
 #endif
 

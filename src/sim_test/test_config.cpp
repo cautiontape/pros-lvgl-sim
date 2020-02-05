@@ -1,5 +1,5 @@
 #include "sim_test/test_config.hpp"
-
+#include <conio.h>
 namespace pros {
 namespace competition {
 /**
@@ -28,15 +28,7 @@ std::uint8_t is_disabled(void)
 } // namespace competition
 uint32_t millis(void)
 {
-#if defined(_WIN32) || defined(_WIN64)
-    return GetTickCount();
-#elif defined(__linux)
-    struct timespec ts;
-
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-#endif
+    return lv_tick_get();
 }
 } // namespace pros
   /**
@@ -112,7 +104,7 @@ void hal_init(void)
     lv_task_create(memory_monitor, 3000, LV_TASK_PRIO_MID, NULL);
 }
 #if defined(_WIN32) || defined(_WIN64)
-DWORD WINAPI task1(LPVOID pragma)
+DWORD WINAPI taskLVGL(LPVOID pragma)
 {
     (void)pragma;
     while (1)
@@ -120,11 +112,29 @@ DWORD WINAPI task1(LPVOID pragma)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
+
+        Sleep(10); /*Just to let the system breath*/
+    }
+}
+DWORD WINAPI taskKeyBoard(LPVOID pragma)
+{
+    (void)pragma;
+    int ch;
+    std::cout << "task2" << std::endl;
+    while (1)
+    {
+        if (_kbhit())
+        {                  //如果有按键按下，则_kbhit()函数返回真
+            ch = _getch(); //使用_getch()函数获取按下的键值
+            std::cout << ch << std::endl;
+            if (ch == 27)
+                break;
+        }
         Sleep(10); /*Just to let the system breath*/
     }
 }
 #else
-void *task1(void *pragma)
+void *taskLVGL(void *pragma)
 {
     (void)pragma;
     while (1)
@@ -132,6 +142,22 @@ void *task1(void *pragma)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
+        usleep(5 * 1000); /*Just to let the system breath*/
+    }
+}
+void *taskKeyBoard(void *pragma)
+{
+    (void)pragma;
+    int ch;
+    while (1)
+    {
+        if (_kbhit())
+        {                  //如果有按键按下，则_kbhit()函数返回真
+            ch = _getch(); //使用_getch()函数获取按下的键值
+            std::cout << ch;
+            if (ch == 27)
+                break;
+        }
         usleep(5 * 1000); /*Just to let the system breath*/
     }
 }
