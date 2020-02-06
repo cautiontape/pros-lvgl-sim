@@ -21,21 +21,28 @@ int main(int argc, char **argv)
     real_kb_drv.type = LV_INDEV_TYPE_KEYPAD;
     real_kb_drv.read_cb = keyboard_read;
     lv_indev_data_t kbDate;
-    int lastKbVal = kbDate.key = 49;
+    keyboard_read(&real_kb_drv, &kbDate);
+    int lastKbVal = kbDate.key;
     while (1)
     {
         keyboard_read(&real_kb_drv, &kbDate);
         if (lastKbVal != kbDate.key)
             switch (kbDate.key)
             {
+                case 49:
+                    initialize();
+                    break;
                 case 50:
                     autonomous();
+                    break;
                 case 51:
                     competition_initialize();
+                    break;
                 case 52:
                     disabled();
+                    break;
                 default:
-                    initialize();
+                    break;
             }
 #if defined(_WIN32) || defined(_WIN64)
         Sleep(10); /*Just to let the system breath*/
