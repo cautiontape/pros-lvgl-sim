@@ -92,31 +92,30 @@ void UserDisplay::clearAction(lv_obj_t *btn, lv_event_t event)
 //     *tempData = lv_sw_get_state(sw);
 //     return LV_RES_OK;
 // }
-// void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
-// {
-//     (void)btn; /*Unused*/
-//     if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
-//     {
-//         if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
-//             userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
-//         else
-//             userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
-//         lv_obj_del(userDisplay->displayObj[OBJ_BTNM_SON]);
-//         userDisplay->displayObj[OBJ_BTNM_SON] = nullptr;
-//     }
-//     if (userDisplay->displayTask[TASK_OTHER] != nullptr)
-//     {
-//         lv_task_del(userDisplay->displayTask[TASK_OTHER]);
-//         userDisplay->displayTask[TASK_OTHER] = nullptr;
-//     }
-//     if (sysData->isOPcontrol == false)
-//         sysData->isOPcontrol = true;
-//     if (sysData->test != 0)
-//         sysData->test = 0;
-//     if (!sysData->pidDebugData.empty()) //如果不为空 择清零
-//         sysData->pidDebugData.clear();
-//     return LV_RES_INV;
-// }
+void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
+{
+    (void)btn; /*Unused*/
+    if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
+    {
+        // if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
+        //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
+        // else
+        //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
+        lv_obj_del(userDisplay->displayObj[OBJ_BTNM_SON]);
+        userDisplay->displayObj[OBJ_BTNM_SON] = nullptr;
+    }
+    if (userDisplay->displayTask[TASK_OTHER] != nullptr)
+    {
+        lv_task_del(userDisplay->displayTask[TASK_OTHER]);
+        userDisplay->displayTask[TASK_OTHER] = nullptr;
+    }
+    // if (sysData->isOPcontrol == false)
+    //     sysData->isOPcontrol = true;
+    // if (sysData->test != 0)
+    //     sysData->test = 0;
+    // if (!sysData->pidDebugData.empty()) //如果不为空 择清零
+    //     sysData->pidDebugData.clear();
+}
 // void UserDisplay::resetAction(lv_obj_t *btn, lv_event_t event)
 // {
 //     (void)btn; /*Unused*/

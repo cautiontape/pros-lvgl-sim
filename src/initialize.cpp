@@ -26,9 +26,9 @@ void competition_initialize()
   */
 void disabled()
 {
-    // userDisplay->delTasks();
-    // userDisplay->delObjs();
-    // userDisplay->createUserObj(OBJ_DISABLED, "obj_disabled", nullptr, "场控关闭状态");
+    userDisplay->delTasks();
+    userDisplay->delObjs();
+    userDisplay->createUserObj(OBJ_DISABLED, "obj_disabled", nullptr, "场控关闭状态");
     // for (auto &it : sysData->obj)
     //     it->setMode(0); //将所有部件都重置为0模式
     // if (autoTask != nullptr)

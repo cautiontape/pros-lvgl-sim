@@ -22,24 +22,30 @@ int main(int argc, char **argv)
     real_kb_drv.read_cb = keyboard_read;
     lv_indev_data_t kbDate;
     keyboard_read(&real_kb_drv, &kbDate);
-    int lastKbVal = kbDate.key;
+    uint32_t lastKbVal = kbDate.key;
     while (1)
     {
         keyboard_read(&real_kb_drv, &kbDate);
+        std::cout << "now:" << kbDate.key << "last:" << lastKbVal << std::endl;
         if (lastKbVal != kbDate.key)
             switch (kbDate.key)
             {
+
                 case 49:
                     initialize();
+                    lastKbVal = 49;
                     break;
                 case 50:
                     autonomous();
+                    lastKbVal = 50;
                     break;
                 case 51:
                     competition_initialize();
+                    lastKbVal = 51;
                     break;
                 case 52:
                     disabled();
+                    lastKbVal = 52;
                     break;
                 default:
                     break;
@@ -49,7 +55,6 @@ int main(int argc, char **argv)
 #else
         usleep(5 * 1000);
 #endif
-        lastKbVal = kbDate.key;
     }
     return 0;
 }
