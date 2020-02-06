@@ -1,5 +1,5 @@
 #include "sim_test/test_config.hpp"
-#include <conio.h>
+
 namespace pros {
 namespace competition {
 /**
@@ -112,24 +112,6 @@ DWORD WINAPI taskLVGL(LPVOID pragma)
         /* Periodically call the lv_task handler.
          * It could be done in a timer interrupt or an OS task too.*/
         lv_task_handler();
-
-        Sleep(10); /*Just to let the system breath*/
-    }
-}
-DWORD WINAPI taskKeyBoard(LPVOID pragma)
-{
-    (void)pragma;
-    int ch;
-    std::cout << "task2" << std::endl;
-    while (1)
-    {
-        if (_kbhit())
-        {                  //如果有按键按下，则_kbhit()函数返回真
-            ch = _getch(); //使用_getch()函数获取按下的键值
-            std::cout << ch << std::endl;
-            if (ch == 27)
-                break;
-        }
         Sleep(10); /*Just to let the system breath*/
     }
 }
@@ -145,20 +127,5 @@ void *taskLVGL(void *pragma)
         usleep(5 * 1000); /*Just to let the system breath*/
     }
 }
-void *taskKeyBoard(void *pragma)
-{
-    (void)pragma;
-    int ch;
-    while (1)
-    {
-        if (_kbhit())
-        {                  //如果有按键按下，则_kbhit()函数返回真
-            ch = _getch(); //使用_getch()函数获取按下的键值
-            std::cout << ch;
-            if (ch == 27)
-                break;
-        }
-        usleep(5 * 1000); /*Just to let the system breath*/
-    }
-}
+
 #endif

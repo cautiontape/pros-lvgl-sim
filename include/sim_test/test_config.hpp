@@ -76,7 +76,6 @@ extern int tick_thread(void *data);
 extern void hal_init(void);
 #if defined(_WIN32) || defined(_WIN64)
 DWORD WINAPI taskLVGL(LPVOID pragma);
-DWORD WINAPI taskKeyBoard(LPVOID pragma);
 #else
 void *taskLVGL(void *pragma);
 void *taskKeyBoard(void *pragma);
