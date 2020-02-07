@@ -1,5 +1,6 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include "ncrapi/system/logger.hpp"
+#include "ncrapi/system/sysBase.hpp"
 #include "sim_test/test_config.hpp"
 
 namespace ncrapi {
@@ -204,6 +205,81 @@ void UserDisplay::delObjs()
             flag++;
         }
     }
+}
+void UserDisplay::createCompe(lv_obj_t *parent)
+{
+    if (parent == nullptr)
+    {
+        delTasks();
+        delObjs();
+        createUserObj(OBJ_COMPETITION, "竞赛等待");
+    }
+    else
+        createUserObj(OBJ_COMPETITION, "竞赛等待", parent);
+    if (lv_obj_get_y(userDisplay->terminal) == 0)
+        lv_obj_set_y(userDisplay->terminal, -210);
+    //创建标签栏
+    lv_obj_t *tab = lv_tabview_create(displayObj[OBJ_COMPETITION], nullptr);
+    lv_obj_t *redTab = lv_tabview_add_tab(tab, "红方");
+    lv_obj_t *blueTab = lv_tabview_add_tab(tab, "蓝方");
+    lv_obj_t *skillTab = lv_tabview_add_tab(tab, "纯自动");
+    lv_tabview_set_tab_act(tab, sysData->jsonVal["自动赛"]["红方&蓝方"].get<uint16_t>(), false); //设置默认红方还是蓝方
+    /*当选项卡按下后进行的操作*/
+    lv_obj_set_event_cb(tab, compTabChoseAction);
+
+    std::vector<std::pair<lv_obj_t *, lv_obj_t *>> compSw; //
+    int nums = -2;                                         //一开始默认有两个不显示的
+    //获取当前元素个数
+    for (auto &it : sysData->jsonVal["自动赛"].items())
+        nums++;
+    if (nums % 2 != 0)
+        nums += 1;
+    int posX = 10, posY = 30;
+    //创建各种开关和文本条 附带位置设置
+    for (auto &it : sysData->jsonVal["自动赛"].items())
+    {
+        if (it.key() != "红方&蓝方" && it.key() != "自动赛&纯自动")
+        {
+            compSw.push_back(std::make_pair(lv_label_create(displayObj[OBJ_COMPETITION], nullptr), lv_sw_create(displayObj[OBJ_COMPETITION], nullptr))); //创建文本条和开关
+            lv_label_set_text(compSw.back().first, it.key().c_str());                                                                                    /*设置文字*/
+            if (nums > 1)
+                lv_obj_set_size(compSw.back().second, 60, ((lv_obj_get_height(displayObj[OBJ_COMPETITION]) - 30) / nums)); //这里的30要跟POSY 初值对应
+            else
+                lv_obj_set_size(compSw.back().second, 60, 25); //这里的30要跟POSY 初值对应
+
+            if (it.value().get<bool>())
+                lv_sw_on(compSw.back().second, LV_ANIM_OFF); //设置按钮默认值
+            else
+                lv_sw_off(compSw.back().second, LV_ANIM_OFF); //设置按钮默认值
+            //位置设置
+            lv_obj_set_pos(compSw.back().first, posX, posY);                                        //设置lab文字的位置
+            lv_obj_align(compSw.back().second, compSw.back().first, LV_ALIGN_OUT_RIGHT_MID, 10, 0); //设置开关的位置
+            lv_sw_set_action(compSw.back().second, swAction);                                       //设置按钮的动作
+            lv_obj_set_free_ptr(compSw.back().second, &it.value());                                 //关联按钮和json
+            if (lv_obj_get_x(compSw.back().second) > 230)                                           //key表示偶数换行 it.szie()表示每行总共有2个数一个KEY 一个VAL
+            {
+                posX = 10;
+                posY += (lv_obj_get_height(compSw.back().second) * 2);
+            }
+            else
+                posX = 260;
+        }
+    }
+    //确认按钮设置
+    lv_obj_t *confirmBtn = lv_btn_create(displayObj[OBJ_COMPETITION], nullptr); //创建确认开关
+    lv_obj_t *confirmLab = lv_label_create(confirmBtn, nullptr);                //创建确认开关文本 这里设置按钮为父级
+    lv_label_set_text(confirmLab, "确\n认");
+    lv_obj_set_size(confirmBtn, 40, 100); //大小设置
+    //设置确定按钮和其文本框的位置
+    lv_obj_align(confirmBtn, displayObj[OBJ_COMPETITION], LV_ALIGN_CENTER, -20, 0);
+
+    //确认按钮的动作
+    // if (parent == nullptr)
+    //     lv_btn_set_action(confirmBtn, LV_BTN_ACTION_CLICK, confirmBtnIncomp);
+    // else
+    //     lv_btn_set_action(confirmBtn, LV_BTN_ACTION_CLICK, confirmBtnInOdom);
+    //调用按钮页面
+    //TODO 技能赛的动作
 }
 
 // void UserDisplay::createMbox(obj_flag objname, const char *txt1, const char *txt2, const char *txt3, lv_btnm_action_t action) //创建一个消息框

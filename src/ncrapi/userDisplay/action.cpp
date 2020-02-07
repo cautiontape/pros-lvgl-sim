@@ -1,4 +1,5 @@
 #include "ncrapi/system/logger.hpp"
+#include "ncrapi/system/sysBase.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
 
 namespace ncrapi {
@@ -35,7 +36,51 @@ void UserDisplay::clearAction(lv_obj_t *btn, lv_event_t event)
         lv_label_set_text(userDisplay->terminalLabs[lv_tabview_get_tab_act(userDisplay->terminal)], "");
     }
 }
-
+/**
+ * 标签栏按下后的动作
+ * @param tab 标签
+ * @param x   几号标签
+ */
+void UserDisplay::compTabChoseAction(lv_obj_t *tab, lv_event_t event)
+{
+    if (event == LV_EVENT_VALUE_CHANGED)
+    {
+        switch (lv_tabview_get_tab_act(tab))
+        {
+            case 0:
+                sysData->jsonVal["自动赛"]["红方&蓝方"] = false;     //红方0
+                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //红方0
+                userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_RED;
+                userDisplay->mainStyle.body.main_color = LV_COLOR_RED;
+                break;
+            case 1:
+                sysData->jsonVal["自动赛"]["红方&蓝方"] = true;      //红方0
+                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //蓝方
+                userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_BLUE;
+                userDisplay->mainStyle.body.main_color = LV_COLOR_BLUE;
+                break;
+            case 2:
+                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = true; //红方0
+                userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_BLACK;
+                userDisplay->mainStyle.body.main_color = LV_COLOR_BLACK;
+                break;
+            default:
+                logger->error({"竞赛场控页面选项卡页面返回错误"});
+                break;
+        }
+        //应用全局样式
+        lv_theme_set_current(userDisplay->theme);
+    }
+}
+//compe的SW的动作
+void UserDisplay::swAction(lv_obj_t *sw, lv_event_t event) //SW的动作
+{
+    if (event == LV_EVENT_VALUE_CHANGED)
+    {
+        // json *tempData = static_cast<json *>(lv_obj_get_free_ptr(sw));
+        // *tempData = lv_sw_get_state(sw);
+    }
+}
 /**
  * 自动赛选择时候的确认按钮的动作
  * @param  btn 要实现动作的按钮的指针
@@ -131,38 +176,7 @@ void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
 //     sysData->saveData();
 //     return LV_RES_OK;
 // }
-// /**
-//  * 标签栏按下后的动作
-//  * @param tab 标签
-//  * @param x   几号标签
-//  */
-// void UserDisplay::compTabChose(lv_obj_t *tab, uint16_t x)
-// {
-//     (void)tab; /*Unused*/
-//     if (x == 0)
-//     {
-//         sysData->jsonVal["自动赛"]["红方&蓝方"] = false;     //红方0
-//         sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //红方0
-//         userDisplay->theme->tabview.bg->body.main_color = LV_COLOR_RED;
-//         userDisplay->mainStyle.body.main_color = LV_COLOR_RED;
-//     }
-//     else if (x == 1)
-//     {
-//         sysData->jsonVal["自动赛"]["红方&蓝方"] = true;      //红方0
-//         sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //蓝方
-//         userDisplay->theme->tabview.bg->body.main_color = LV_COLOR_BLUE;
-//         userDisplay->mainStyle.body.main_color = LV_COLOR_BLUE;
-//     }
-//     else if (x == 2)
-//     {
-//         sysData->jsonVal["自动赛"]["自动赛&纯自动"] = true; //红方0
-//         userDisplay->theme->tabview.bg->body.main_color = LV_COLOR_BLACK;
-//         userDisplay->mainStyle.body.main_color = LV_COLOR_BLACK;
-//     }
-//     //应用全局样式
-//     lv_theme_set_current(userDisplay->theme);
-//     return LV_RES_OK;
-// }
+
 // /**
 //  * 按钮阵列的动作
 //  * @param  btnm 按钮阵列

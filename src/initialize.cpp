@@ -9,6 +9,7 @@ void initialize()
     logger = std::make_unique<ncrapi::Logger>();
     //显示初始化
     userDisplay = std::make_unique<ncrapi::UserDisplay>();
+    sysData = std::make_unique<ncrapi::SysBase>(userData);
 #if defined(__clang__) || defined(_MSC_VER)
     Sleep(5000); /*Just to let the system breath*/
 #elif defined(__GNUC__)
@@ -19,7 +20,7 @@ void initialize()
 }
 void competition_initialize()
 {
-    // userDisplay->createCompe();
+    userDisplay->createCompe();
 }
 /**
  * 场控没开自动赛 没开手动 完全禁止的时候使用的函数
