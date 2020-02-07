@@ -77,8 +77,8 @@ void UserDisplay::swAction(lv_obj_t *sw, lv_event_t event) //SW的动作
 {
     if (event == LV_EVENT_VALUE_CHANGED)
     {
-        // json *tempData = static_cast<json *>(lv_obj_get_free_ptr(sw));
-        // *tempData = lv_sw_get_state(sw);
+        json *tempData = static_cast<json *>(lv_obj_get_user_data(sw));
+        *tempData = lv_sw_get_state(sw);
     }
 }
 /**
@@ -87,79 +87,80 @@ void UserDisplay::swAction(lv_obj_t *sw, lv_event_t event) //SW的动作
  * @return     返回不知道啥....
  */
 
-// void UserDisplay::confirmBtnIncomp(lv_obj_t *btn, lv_event_t event)
-// {
-//     (void)btn;
-//     sysData->saveData();
-//     //获取开关状态
-//     std::string str;
-//     for (auto &it : sysData->jsonVal["自动赛"].items())
-//     {
-//         std::string tempStr = it.key();
-//         auto pos = tempStr.find("&"); //查找间隔符号
-//         if (pos != std::string::npos)
-//         {
-//             if (it.value())
-//                 tempStr.erase(0, pos + 1);
-//             else
-//                 tempStr.erase(pos, tempStr.length());
-//             str += (tempStr + "\n");
-//         }
-//         else
-//             logger->error({"自动赛json选项设置错误 请用&间隔"});
-//     }
-//     // 创建确认页面
-//     lv_obj_t *confirm = lv_obj_create(userDisplay->displayObj[OBJ_COMPETITION], nullptr);
-//     lv_obj_set_size(confirm, lv_obj_get_width(userDisplay->displayObj[OBJ_COMPETITION]), lv_obj_get_height(userDisplay->displayObj[OBJ_COMPETITION]));
-//     lv_obj_set_style(confirm, &userDisplay->mainStyle);
-//     userDisplay->createStartObj(confirm);
-//     //显示自动赛选项
-//     lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[BTNM_START], nullptr); //创建LAB条
-//     userDisplay->ostr.clear();                                                             //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
-//     userDisplay->ostr.str("");                                                             //2：调用str("")将缓冲区清零，清除脏数据
-//     userDisplay->ostr << str << std::endl;
-//     lv_label_set_text(autoinfoLab, userDisplay->ostr.str().c_str());
-//     lv_obj_align(autoinfoLab, userDisplay->displayObj[BTNM_START], LV_ALIGN_IN_TOP_MID, 0, 0);
-//     return LV_RES_INV;
-// }
-// void UserDisplay::confirmBtnInOdom(lv_obj_t *btn, lv_event_t event)
-// {
-//     (void)btn;
-//     sysData->saveData();
-//     lv_obj_del(userDisplay->displayObj[OBJ_COMPETITION]);
-//     userDisplay->displayObj[OBJ_COMPETITION] = nullptr;
-//     return LV_RES_INV;
-// }
+void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
+{
+    (void)btn;
+    if (event == LV_EVENT_PRESSED)
+    {
+        sysData->saveData();
+        //获取开关状态
+        std::string str;
+        for (auto &it : sysData->jsonVal["自动赛"].items())
+        {
+            std::string tempStr = it.key();
+            auto pos = tempStr.find("&"); //查找间隔符号
+            if (pos != std::string::npos)
+            {
+                if (it.value())
+                    tempStr.erase(0, pos + 1);
+                else
+                    tempStr.erase(pos, tempStr.length());
+                str += (tempStr + "\n");
+            }
+            else
+                logger->error({"自动赛json选项设置错误 请用&间隔"});
+        }
+        // 创建确认页面
+        lv_obj_t *confirm = lv_obj_create(userDisplay->displayObj[OBJ_COMPETITION], nullptr);
+        lv_obj_set_size(confirm, lv_obj_get_width(userDisplay->displayObj[OBJ_COMPETITION]), lv_obj_get_height(userDisplay->displayObj[OBJ_COMPETITION]));
+        lv_obj_set_style(confirm, &userDisplay->mainStyle);
+        userDisplay->createStartObj(confirm);
+        //显示自动赛选项
+        lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[BTNM_START], nullptr); //创建LAB条
+        userDisplay->ostr.clear();                                                             //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
+        userDisplay->ostr.str("");                                                             //2：调用str("")将缓冲区清零，清除脏数据
+        userDisplay->ostr << str << std::endl;
+        lv_label_set_text(autoinfoLab, userDisplay->ostr.str().c_str());
+        lv_obj_align(autoinfoLab, userDisplay->displayObj[BTNM_START], LV_ALIGN_IN_TOP_MID, 0, 0);
+    }
+}
+void UserDisplay::confirmBtnInOdom(lv_obj_t *btn, lv_event_t event)
+{
+    (void)btn;
+    if (event == LV_EVENT_PRESSED)
+    {
+        sysData->saveData();
+        lv_obj_del(userDisplay->displayObj[OBJ_COMPETITION]);
+        userDisplay->displayObj[OBJ_COMPETITION] = nullptr;
+    }
+}
 
-// void UserDisplay::swAction(lv_obj_t *sw, lv_event_t event) //SW的动作
-// {
-//     json *tempData = static_cast<json *>(lv_obj_get_free_ptr(sw));
-//     *tempData = lv_sw_get_state(sw);
-//     return LV_RES_OK;
-// }
 void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
 {
     (void)btn; /*Unused*/
-    if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
+    if (event == LV_EVENT_PRESSED)
     {
-        // if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
-        //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
-        // else
-        //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
-        lv_obj_del(userDisplay->displayObj[OBJ_BTNM_SON]);
-        userDisplay->displayObj[OBJ_BTNM_SON] = nullptr;
+        if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
+        {
+            // if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
+            //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
+            // else
+            //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
+            lv_obj_del(userDisplay->displayObj[OBJ_BTNM_SON]);
+            userDisplay->displayObj[OBJ_BTNM_SON] = nullptr;
+        }
+        if (userDisplay->displayTask[TASK_OTHER] != nullptr)
+        {
+            lv_task_del(userDisplay->displayTask[TASK_OTHER]);
+            userDisplay->displayTask[TASK_OTHER] = nullptr;
+        }
+        // if (sysData->isOPcontrol == false)
+        //     sysData->isOPcontrol = true;
+        // if (sysData->test != 0)
+        //     sysData->test = 0;
+        // if (!sysData->pidDebugData.empty()) //如果不为空 择清零
+        //     sysData->pidDebugData.clear();
     }
-    if (userDisplay->displayTask[TASK_OTHER] != nullptr)
-    {
-        lv_task_del(userDisplay->displayTask[TASK_OTHER]);
-        userDisplay->displayTask[TASK_OTHER] = nullptr;
-    }
-    // if (sysData->isOPcontrol == false)
-    //     sysData->isOPcontrol = true;
-    // if (sysData->test != 0)
-    //     sysData->test = 0;
-    // if (!sysData->pidDebugData.empty()) //如果不为空 择清零
-    //     sysData->pidDebugData.clear();
 }
 // void UserDisplay::resetAction(lv_obj_t *btn, lv_event_t event)
 // {

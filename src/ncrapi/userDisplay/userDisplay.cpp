@@ -254,8 +254,8 @@ void UserDisplay::createCompe(lv_obj_t *parent)
             //位置设置
             lv_obj_set_pos(compSw.back().first, posX, posY);                                        //设置lab文字的位置
             lv_obj_align(compSw.back().second, compSw.back().first, LV_ALIGN_OUT_RIGHT_MID, 10, 0); //设置开关的位置
-            lv_sw_set_action(compSw.back().second, swAction);                                       //设置按钮的动作
-            lv_obj_set_free_ptr(compSw.back().second, &it.value());                                 //关联按钮和json
+            lv_obj_set_event_cb(compSw.back().second, swAction);                                    //设置按钮的动作
+            lv_obj_set_user_data(compSw.back().second, &it.value());                                //关联按钮和json
             if (lv_obj_get_x(compSw.back().second) > 230)                                           //key表示偶数换行 it.szie()表示每行总共有2个数一个KEY 一个VAL
             {
                 posX = 10;
@@ -274,14 +274,28 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     lv_obj_align(confirmBtn, displayObj[OBJ_COMPETITION], LV_ALIGN_CENTER, -20, 0);
 
     //确认按钮的动作
-    // if (parent == nullptr)
-    //     lv_btn_set_action(confirmBtn, LV_BTN_ACTION_CLICK, confirmBtnIncomp);
-    // else
-    //     lv_btn_set_action(confirmBtn, LV_BTN_ACTION_CLICK, confirmBtnInOdom);
+    if (parent == nullptr)
+        lv_obj_set_event_cb(confirmBtn, compConfirmAction);
+    else
+        ; //lv_obj_set_event_cb(confirmBtn, compConfirmAction);
     //调用按钮页面
     //TODO 技能赛的动作
 }
+void UserDisplay::createStartObj(lv_obj_t *parent)
+{
+    // if (visionData != nullptr)
+    //     visionData->setSig(sysData->jsonVal, sysData->jsonVal["视觉信息"]["数据"].get<int>());
+    // static const char *startBtnm[] = {"系统信息", "自定义测试", "\n",
+    //                                   "全局参数设置", "维护信息", "\n",
+    //                                   "PID调试", "视觉传感器设置", "\n",
+    //                                   "ODOM测试", "版本号", ""};
+    // if (displayObj[BTNM_START] == nullptr)
+    //     displayObj[BTNM_START] = lv_btnm_create(parent, nullptr); //创建按钮集群
 
+    // lv_btnm_set_map(displayObj[BTNM_START], startBtnm);
+    // lv_obj_set_size(displayObj[BTNM_START], lv_obj_get_width(parent), lv_obj_get_height(parent));
+    // lv_btnm_set_action(displayObj[BTNM_START], startBtnmAction);
+}
 // void UserDisplay::createMbox(obj_flag objname, const char *txt1, const char *txt2, const char *txt3, lv_btnm_action_t action) //创建一个消息框
 // {
 //     lv_obj_t *mbox = lv_mbox_create(displayObj[objname], nullptr);
