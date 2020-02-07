@@ -34,10 +34,6 @@ uint32_t millis(void)
 {
     return lv_tick_get();
 }
-
-Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port)
-{
-}
 } // namespace pros
   /**
  * Print the memory usage periodically

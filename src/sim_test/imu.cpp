@@ -15,61 +15,61 @@
 namespace pros {
 std::int32_t Imu::reset() const
 {
-    return pros::c::imu_reset(_port);
+    return 1;
 }
 
 double Imu::get_rotation() const
 {
-    return pros::c::imu_get_rotation(_port);
+    return 1.1;
 }
 
 double Imu::get_heading() const
 {
-    return pros::c::imu_get_heading(_port);
+    return 2.2;
 }
 
 pros::c::quaternion_s_t Imu::get_quaternion() const
 {
-    return pros::c::imu_get_quaternion(_port);
+    return {1, 2, 3, 4};
 }
 
 pros::c::euler_s_t Imu::get_euler() const
 {
-    return pros::c::imu_get_euler(_port);
+    return {1, 2, 3};
 }
 
 double Imu::get_pitch() const
 {
-    return get_euler().pitch;
+    return 1;
 }
 
 double Imu::get_roll() const
 {
-    return get_euler().roll;
+    return 2;
 }
 
 double Imu::get_yaw() const
 {
-    return get_euler().yaw;
+    return 3;
 }
 
 pros::c::imu_gyro_s_t Imu::get_gyro_rate() const
 {
-    return pros::c::imu_get_gyro_rate(_port);
+    return {1, 2, 3};
 }
 
 pros::c::imu_accel_s_t Imu::get_accel() const
 {
-    return pros::c::imu_get_accel(_port);
+    return {1, 2, 3};
 }
 
 pros::c::imu_status_e_t Imu::get_status() const
 {
-    return pros::c::imu_get_status(_port);
+    return pros::c::E_IMU_STATUS_CALIBRATING;
 }
 
 bool Imu::is_calibrating() const
 {
-    return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
+    return true;
 }
 } // namespace pros
