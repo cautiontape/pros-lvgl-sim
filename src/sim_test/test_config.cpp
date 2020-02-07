@@ -34,25 +34,7 @@ uint32_t millis(void)
 {
     return lv_tick_get();
 }
-ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _port(port)
-{
-}
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port)
-{
-}
-ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port)
-{
-}
-ADIEncoder::ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed)
-{
-}
-Motor::Motor(const std::uint8_t port) : _port(port)
-{
-}
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port)
-{
-}
 Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port)
 {
 }
