@@ -8,9 +8,9 @@
 // #include "ncrapi/system/sysUser.hpp"
 // #include "ncrapi/system/visionData.hpp"
 #include "ncrapi/system/logger.hpp"
+#include "ncrapi/system/sysBase.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include "sim_test/test_config.hpp"
-
 #define NCR_VERSION_STRING "9.7.1"
 
 // //通用部件

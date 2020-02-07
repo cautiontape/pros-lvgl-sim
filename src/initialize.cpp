@@ -1,7 +1,7 @@
 #include "main.hpp"
 std::unique_ptr<ncrapi::Logger> logger = nullptr; //系统日志
 std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
-
+std::unique_ptr<ncrapi::SysBase> sysData = nullptr;
 void initialize()
 {
 
@@ -19,7 +19,7 @@ void initialize()
 }
 void competition_initialize()
 {
-    // userDisplay->createCompe();
+    userDisplay->createCompe();
 }
 /**
  * 场控没开自动赛 没开手动 完全禁止的时候使用的函数

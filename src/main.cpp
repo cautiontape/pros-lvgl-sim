@@ -26,11 +26,9 @@ int main(int argc, char **argv)
     while (1)
     {
         keyboard_read(&real_kb_drv, &kbDate);
-        std::cout << "now:" << kbDate.key << "last:" << lastKbVal << std::endl;
         if (lastKbVal != kbDate.key)
             switch (kbDate.key)
             {
-
                 case 49:
                     initialize();
                     lastKbVal = 49;

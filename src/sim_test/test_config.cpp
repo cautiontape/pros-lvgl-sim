@@ -1,4 +1,8 @@
 #include "sim_test/test_config.hpp"
+#include "pros/adi.hpp"
+#include "pros/imu.hpp"
+#include "pros/motors.hpp"
+#include "pros/vision.hpp"
 
 namespace pros {
 namespace competition {
@@ -10,7 +14,7 @@ namespace competition {
  */
 std::uint8_t get_status(void)
 {
-    return (1 << 2);
+    return 0;
 }
 
 std::uint8_t is_autonomous(void)
