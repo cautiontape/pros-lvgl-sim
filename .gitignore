@@ -9,3 +9,4 @@ bin/
 *.pdb
 *.tlog
 /ccls-cache
+config.json

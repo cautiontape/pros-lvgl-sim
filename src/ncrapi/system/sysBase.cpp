@@ -28,7 +28,11 @@ SysBase::SysBase(const json &pragam)
  */
 bool SysBase::readSDcard(json pragam)
 {
+#if (SIM_MODE == 1)
+    FILE *file = fopen("./config.json", "r");
+#else
     FILE *file = fopen("/usd/config.json", "r");
+#endif
     if (file == nullptr)
     {
         logger->error({I18N_SYSTEM_READ_ERROR});
@@ -41,26 +45,26 @@ bool SysBase::readSDcard(json pragam)
     jsonVal = json::parse(line);
     if (jsonVal[I18N_SYSTEM_INFO][I18N_USER].get<std::string>() != pragam[I18N_SYSTEM_INFO][I18N_USER].get<std::string>())
     {
-        logger->error({"用户选择错误！请修改robotSet.hpp"});
-        logger->error({"SD卡上用户名为:", jsonVal["系统信息"]["用户"].get<std::string>()});
-        logger->error({"robotSet用户名为:", pragam["系统信息"]["用户"].get<std::string>()});
+        logger->error({I18N_SYSTEM_USER_ERROR_1});
+        logger->error({I18N_SYSTEM_USER_ERROR_2, jsonVal[I18N_SYSTEM_INFO][I18N_USER].get<std::string>()});
+        logger->error({I18N_SYSTEM_USER_ERROR_3, pragam[I18N_SYSTEM_INFO][I18N_USER].get<std::string>()});
         while (1)
             ;
     }
     std::stringstream oss;     //主要为了去掉小数点后多余的0 默认3位
     oss.setf(std::ios::fixed); //用定点格式显示浮点数,不会用科学计数法表示
     oss.precision(1);          //由于用了定点格式，设置变为了保留1位小数
-    oss << pragam["json版本号"];
-    if (jsonVal["json版本号"] < pragam["json版本号"])
+    oss << pragam[I18N_JSON_VER];
+    if (jsonVal[I18N_JSON_VER] < pragam[I18N_JSON_VER])
     {
         auto patch = json::userdiff(jsonVal, pragam); //比较差异
         jsonVal = jsonVal.patch(patch);               //应用补丁
-        oss >> jsonVal["json版本号"];
-        logger->debug({"json版本升级为:", oss.str().c_str()});
+        oss >> jsonVal[I18N_JSON_VER];
+        logger->debug({I18N_SYSTEM_JSON_UPDATE_1, oss.str().c_str()});
         saveData();
     }
     else
-        logger->info({"json当前为最新版本:", oss.str().c_str()});
+        logger->info({I18N_SYSTEM_JSON_UPDATE_2, oss.str().c_str()});
     fclose(file);
     return true;
 }
@@ -75,14 +79,18 @@ bool SysBase::readSDcard(json pragam)
 
 bool SysBase::saveData()
 {
+#if (SIM_MODE == 1)
+    FILE *file = fopen("./config.json", "w");
+#else
     FILE *file = fopen("/usd/config.json", "w");
+#endif
     if (file == nullptr)
     {
-        logger->error({"json 保存失败"});
+        logger->error({I18N_SYSTEM_JSON_SAVE_ERROR});
         return false;
     }
     fprintf(file, "%s", jsonVal.dump(4).c_str()); //保存
-    logger->info({"json 保存成功"});
+    logger->info({I18N_SYSTEM_JSON_SAVE_SUCCESSFUL});
     fclose(file);
     return true;
 }
@@ -96,7 +104,7 @@ void SysBase::i2cCheck(const int port, const std::string name)
             break;
         }
         if (it == _i2cPort.end() - 1)
-            logger->error({name, "端口:", std::to_string(port), "冲突!,请检查配置"});
+            logger->error({name, I18N_PORT ":", std::to_string(port), I18N_SYSTEM_PORT_CHECK_1});
     }
 }
 void SysBase::adiCheck(const int port, const std::string name)
@@ -109,7 +117,7 @@ void SysBase::adiCheck(const int port, const std::string name)
             break;
         }
         if (it == _adiPort.end() - 1)
-            logger->error({name, "端口:", std::to_string(port), "冲突!,请检查配置"});
+            logger->error({name, I18N_PORT ":", std::to_string(port), I18N_SYSTEM_PORT_CHECK_1});
     }
 }
 void SysBase::adiCheck(const std::pair<int, int> port, const std::string name)
@@ -126,10 +134,10 @@ void SysBase::adiCheck(const std::pair<int, int> port, const std::string name)
                     break;
             }
             if (it == _adiPort.end() - 1)
-                logger->error({name, "端口:", std::to_string(port.first), " ", std::to_string(port.second), "冲突!,请检查配置"});
+                logger->error({name, I18N_PORT ":", std::to_string(port.first), " ", std::to_string(port.second), I18N_SYSTEM_PORT_CHECK_1});
         }
     else
-        logger->error({name, "端口:", std::to_string(port.first), " ", std::to_string(port.second), "第一个端口号不能为偶数"});
+        logger->error({name, I18N_PORT ":", std::to_string(port.first), " ", std::to_string(port.second), I18N_SYSTEM_PORT_CHECK_2});
 }
 /**
     *增加部件名字 
