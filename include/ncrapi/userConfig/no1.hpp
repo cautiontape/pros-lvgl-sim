@@ -1,5 +1,13 @@
 #pragma once
 #include "ncrapi/system/json.hpp"
+
+#define CHN
+#if defined(CHN)
+#include "ncrapi/i18n/chinese.hpp" //chinese
+#elif defined(EN)
+#include "ncrapi/i18n/english.hpp" //english
+#endif
+
 const json userData = {
     {"json版本号", 1.3},
     {
@@ -17,10 +25,10 @@ const json userData = {
         },
     },
     {
-        "自动赛",
+        I18N_AUTO,
         {
-            {"自动赛&纯自动", false},
-            {"红方&蓝方", true},
+            {I18N_AUTO "&" I18N_SKILL_AUTO, false},           //自动赛或者纯自动
+            {I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE, true}, //红方或者蓝方
             {"长边&短边", false},
             {"放&不放", false},
             {"视觉启用&不启用", false},

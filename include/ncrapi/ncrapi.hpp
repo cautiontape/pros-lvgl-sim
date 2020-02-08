@@ -1,5 +1,4 @@
 #pragma once
-#include "ncrapi/robotSet.hpp"
 #include "ncrapi/system/logger.hpp"
 #include "ncrapi/system/sysBase.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"

@@ -25,10 +25,10 @@ Logger::Logger()
     if (pros::competition::get_status() == COMPETITION_CONNECTED)
     {
         isComp = true;
-        std::cout << "日志类构造成功,场控已连接" << std::endl;
+        std::cout << I18N_LOGGER_COMPETITION_YES << std::endl;
     }
     else
-        std::cout << "日志类构造成功,场控未连接" << std::endl;
+        std::cout << I18N_LOGGER_COMPETITION_NO << std::endl;
 }
 void Logger::error(std::initializer_list<std::string> val)
 {

@@ -80,11 +80,11 @@ UserDisplay::UserDisplay()
     lv_anim_create(&a);                                        /*Start the animation*/
 
     //应用全局样式
-    logger->info({"图像类构造成功"});
+    logger->info({I18N_USERDISPALY_CLASS, I18N_CREATE_SUCCESSFUL});
 }
 void UserDisplay::createTerminal(lv_obj_t *parent)
 {
-    std::vector<std::string> Level = {"错误", "警告"};
+    std::vector<std::string> Level = {I18N_ERROR, I18N_WARNNING};
     //创建终端
     terminal = lv_tabview_create(parent, nullptr);
     lv_obj_set_size(terminal, LV_HOR_RES, LV_VER_RES); //设置页面大小
@@ -144,10 +144,10 @@ void UserDisplay::createUserObj(obj_flag objname, const char *terminalText, lv_o
         }
 
         lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
-        logger->info({"图像类:", terminalText, " 构造成功"});
+        logger->info({I18N_USERDISPALY_CLASS, ":", terminalText, I18N_CREATE_SUCCESSFUL});
     }
     else
-        logger->debug({"图像类:", terminalText, " 已经存在"});
+        logger->debug({I18N_USERDISPALY_CLASS, ":", terminalText, I18N_ALREADYEXIST});
 
     if (labText != nullptr)
     {
@@ -167,10 +167,10 @@ void UserDisplay::createUserTask(task_flag taskName, lv_task_cb_t task, uint32_t
     if (displayTask[taskName] == nullptr)
     {
         displayTask[taskName] = lv_task_create(task, loopTime, LV_TASK_PRIO_LOW, pragma);
-        logger->info({"图像类线程:", terminalText, " 构造成功"});
+        logger->info({I18N_USERDISPALY_CLASS, I18N_THREAD ":", terminalText, I18N_CREATE_SUCCESSFUL});
     }
     else
-        logger->warnning({"图像类线程:", terminalText, " 已经存在"});
+        logger->warnning({I18N_USERDISPALY_CLASS, I18N_THREAD ":", terminalText, I18N_ALREADYEXIST});
 }
 /**
  * 删除所有线程 
@@ -184,7 +184,7 @@ void UserDisplay::delTasks()
         {
             lv_task_del(it);
             it = nullptr;
-            std::cout << "删除图像类线程:" << flag << " 个" << std::endl;
+            logger->info({I18N_DELETE, I18N_USERDISPALY_CLASS, I18N_THREAD, ":", std::to_string(flag)});
             flag++;
         }
     }
@@ -201,7 +201,7 @@ void UserDisplay::delObjs()
         {
             lv_obj_del(it);
             it = nullptr;
-            logger->info({"删除图像类:", std::to_string(flag), " 个"});
+            logger->info({I18N_DELETE, I18N_USERDISPALY_CLASS, ":", std::to_string(flag)});
             flag++;
         }
     }
@@ -212,29 +212,29 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     {
         delTasks();
         delObjs();
-        createUserObj(OBJ_COMPETITION, "竞赛等待");
+        createUserObj(OBJ_COMPETITION, I18N_COMPETITION_INIT);
     }
     else
-        createUserObj(OBJ_COMPETITION, "竞赛等待", parent);
+        createUserObj(OBJ_COMPETITION, I18N_COMPETITION_INIT, parent);
     if (lv_obj_get_y(userDisplay->terminal) == 0)
         lv_obj_set_y(userDisplay->terminal, -210);
     //创建标签栏
     lv_obj_t *tab = lv_tabview_create(displayObj[OBJ_COMPETITION], nullptr);
     lv_obj_set_size(tab, lv_obj_get_width(displayObj[OBJ_COMPETITION]), lv_obj_get_height(displayObj[OBJ_COMPETITION]));
-    lv_obj_t *redTab = lv_tabview_add_tab(tab, "红方");
-    lv_obj_t *blueTab = lv_tabview_add_tab(tab, "蓝方");
-    lv_obj_t *skillTab = lv_tabview_add_tab(tab, "纯自动");
-    lv_tabview_set_tab_act(tab, sysData->jsonVal["自动赛"]["红方&蓝方"].get<uint16_t>(), false); //设置默认红方还是蓝方
+    lv_obj_t *redTab = lv_tabview_add_tab(tab, I18N_RED_ALLIANCE);
+    lv_obj_t *blueTab = lv_tabview_add_tab(tab, I18N_BLUD_ALLIANCE);
+    lv_obj_t *skillTab = lv_tabview_add_tab(tab, I18N_SKILL_AUTO);
+    lv_tabview_set_tab_act(tab, sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE].get<uint16_t>(), false); //设置默认红方还是蓝方
     /*当选项卡按下后进行的操作*/
     lv_obj_set_event_cb(tab, compTabChoseAction);
 
     std::vector<std::pair<lv_obj_t *, lv_obj_t *>> compSw; //
-    int nums = sysData->jsonVal["自动赛"].size() - 2;      //计算单位数量 一开始默认有两个不显示的 注意计数从1开始 0不算
+    int nums = sysData->jsonVal[I18N_AUTO].size() - 2;     //计算单位数量 一开始默认有两个不显示的 注意计数从1开始 0不算
     int posX = 10, posY = 30;
     //创建各种开关和文本条 附带位置设置
-    for (auto &it : sysData->jsonVal["自动赛"].items())
+    for (auto &it : sysData->jsonVal[I18N_AUTO].items())
     {
-        if (it.key() != "红方&蓝方" && it.key() != "自动赛&纯自动")
+        if (it.key() != (I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE) && it.key() != (I18N_AUTO "&" I18N_SKILL_AUTO))
         {
             compSw.push_back(std::make_pair(lv_label_create(displayObj[OBJ_COMPETITION], nullptr), lv_sw_create(displayObj[OBJ_COMPETITION], nullptr))); //创建文本条和开关
             lv_label_set_text(compSw.back().first, it.key().c_str());                                                                                    /*设置文字*/
@@ -260,7 +260,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     //确认按钮设置
     lv_obj_t *confirmBtn = lv_btn_create(displayObj[OBJ_COMPETITION], nullptr); //创建确认开关
     lv_obj_t *confirmLab = lv_label_create(confirmBtn, nullptr);                //创建确认开关文本 这里设置按钮为父级
-    lv_label_set_text(confirmLab, "确\n认");
+    lv_label_set_text(confirmLab, "Y\nE\nS");
     lv_obj_set_size(confirmBtn, 40, 100); //大小设置
     //设置确定按钮和其文本框的位置
     lv_obj_align(confirmBtn, displayObj[OBJ_COMPETITION], LV_ALIGN_CENTER, 0, 0);

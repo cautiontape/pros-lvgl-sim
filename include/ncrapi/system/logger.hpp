@@ -1,8 +1,10 @@
 #pragma once
 #include "lvgl/lvgl.h"
+#include "ncrapi/robotSet.hpp"
 #include "ncrapi/util/timer.hpp"
 #include <memory>
 #include <string>
+
 namespace ncrapi {
 
 class Logger
