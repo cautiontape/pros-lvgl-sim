@@ -1,6 +1,8 @@
-#include "sim_test/test_config.hpp"
+#include "ncrapi/robotSet.hpp"
 #if (SIM_MODE == 1)
+#include "lvgl/lvgl.h"
 #include "pros/rtos.hpp"
+
 namespace pros {
 namespace competition {
 /**

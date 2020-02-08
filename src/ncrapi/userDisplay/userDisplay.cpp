@@ -1,7 +1,6 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include "ncrapi/system/logger.hpp"
 #include "ncrapi/system/sysBase.hpp"
-#include "sim_test/test_config.hpp"
 
 namespace ncrapi {
 void btn_event_cb(lv_obj_t *btn, lv_event_t event)

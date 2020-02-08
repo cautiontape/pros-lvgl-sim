@@ -1,9 +1,4 @@
-#include "sim_test/test_config.hpp"
-#include "pros/adi.hpp"
-#include "pros/imu.hpp"
-#include "pros/motors.hpp"
-#include "pros/vision.hpp"
-
+#include "main.hpp"
 /**
  * Print the memory usage periodically
  * @param param

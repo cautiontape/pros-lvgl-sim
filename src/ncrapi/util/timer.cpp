@@ -7,7 +7,6 @@
  */
 
 #include "ncrapi/util/timer.hpp"
-#include "sim_test/test_config.hpp"
 namespace ncrapi {
 
 Timer::Timer() : firstCalled(QTime(pros::millis() * millisecond)),
