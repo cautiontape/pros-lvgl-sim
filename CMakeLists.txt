@@ -36,7 +36,7 @@ if(MODE EQUAL 1)
         message(STATUS "windows")
         #添加-D
         add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-        target_link_libraries(main  SDL2 SDL2main lvgl_clang_win drivers_clang_win)#不链接pthread easylog编译报错
+        target_link_libraries(main PRIVATE SDL2 SDL2main lvgl_clang_win drivers_clang_win)#不链接pthread easylog编译报错
     else()
         message(STATUS "无法判断属于哪种系统!")
     endif()
