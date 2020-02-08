@@ -48,24 +48,24 @@ void UserDisplay::compTabChoseAction(lv_obj_t *tab, lv_event_t event)
         switch (lv_tabview_get_tab_act(tab))
         {
             case 0:
-                sysData->jsonVal["自动赛"]["红方&蓝方"] = false;     //红方0
-                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //红方0
+                sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE] = false; //红方0
+                sysData->jsonVal[I18N_AUTO][I18N_AUTO "&" I18N_SKILL_AUTO] = false;            //红方0
                 userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_RED;
                 userDisplay->mainStyle.body.main_color = LV_COLOR_RED;
                 break;
             case 1:
-                sysData->jsonVal["自动赛"]["红方&蓝方"] = true;      //红方0
-                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = false; //蓝方
+                sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE] = true; //红方0
+                sysData->jsonVal[I18N_AUTO][I18N_AUTO "&" I18N_SKILL_AUTO] = false;           //蓝方
                 userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_BLUE;
                 userDisplay->mainStyle.body.main_color = LV_COLOR_BLUE;
                 break;
             case 2:
-                sysData->jsonVal["自动赛"]["自动赛&纯自动"] = true; //红方0
+                sysData->jsonVal[I18N_AUTO][I18N_AUTO "&" I18N_SKILL_AUTO] = true; //红方0
                 userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_BLACK;
                 userDisplay->mainStyle.body.main_color = LV_COLOR_BLACK;
                 break;
             default:
-                logger->error({"竞赛场控页面选项卡页面返回错误"});
+                logger->error({I18N_COMPETITION_TAB_CHOSE_ERROR});
                 break;
         }
         //应用全局样式
@@ -95,7 +95,7 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
         sysData->saveData();
         //获取开关状态
         std::string str;
-        for (auto &it : sysData->jsonVal["自动赛"].items())
+        for (auto &it : sysData->jsonVal[I18N_AUTO].items())
         {
             std::string tempStr = it.key();
             auto pos = tempStr.find("&"); //查找间隔符号
@@ -108,7 +108,7 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
                 str += (tempStr + "\n");
             }
             else
-                logger->error({"自动赛json选项设置错误 请用&间隔"});
+                logger->error({I18N_COMPETITION_CONFIRM_ERROR});
         }
         // 创建确认页面
         lv_obj_t *confirm = lv_obj_create(userDisplay->displayObj[OBJ_COMPETITION], nullptr);
@@ -116,12 +116,12 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
         lv_obj_set_style(confirm, &userDisplay->mainStyle);
         userDisplay->createStartObj(confirm);
         //显示自动赛选项
-        lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[BTNM_START], nullptr); //创建LAB条
-        userDisplay->ostr.clear();                                                             //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
-        userDisplay->ostr.str("");                                                             //2：调用str("")将缓冲区清零，清除脏数据
+        lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[OBJ_COMPETITION], nullptr); //创建LAB条
+        userDisplay->ostr.clear();                                                                  //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
+        userDisplay->ostr.str("");                                                                  //2：调用str("")将缓冲区清零，清除脏数据
         userDisplay->ostr << str << std::endl;
         lv_label_set_text(autoinfoLab, userDisplay->ostr.str().c_str());
-        lv_obj_align(autoinfoLab, userDisplay->displayObj[BTNM_START], LV_ALIGN_IN_TOP_MID, 0, 0);
+        lv_obj_align(autoinfoLab, userDisplay->displayObj[OBJ_COMPETITION], LV_ALIGN_IN_TOP_MID, 0, 0);
     }
 }
 void UserDisplay::confirmBtnInOdom(lv_obj_t *btn, lv_event_t event)
@@ -142,7 +142,7 @@ void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
     {
         if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
         {
-            // if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
+            // if (!sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE]) //设置默认颜色
             //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
             // else
             //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
