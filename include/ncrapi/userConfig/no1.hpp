@@ -1,6 +1,8 @@
 #pragma once
 #include "ncrapi/system/json.hpp"
-
+//选择模式 1是模拟器模式 0是机器人程序模式
+#define SIM_MODE 1
+//选择语言
 #define CHN
 #if defined(CHN)
 #include "ncrapi/i18n/chinese.hpp" //chinese
@@ -9,26 +11,27 @@
 #endif
 
 const json userData = {
-    {"json版本号", 1.3},
+    {I18N_JSON_VER, 1.3}, //JSON版本号
     {
-        "系统信息",
+        I18N_SYSTEM_INFO,
         {
-            {"机器人类型", "初号机"},
-            {"队伍编号", "8982D"},
-            {"用户", "bobo"},
-            {"机器人长度", 456},
-            {"机器人宽度", 456},
-            {"赛场边长", 3445},
-            {"轮间距", 315.0},
-            {"车轮直径", 104},
-            {"机器重量", 8.132},
+            {I18N_ROBOT_TYPE, "初号机"},
+            {I18N_TEAM_NUM, "8982D"},
+            {I18N_USER, "bobo"},
+            {I18N_ROBOT_LENGTH, 456},
+            {I18N_ROBOT_WIDTH, 456},
+            {I18N_SITE_SIZE, 3445},
+            {I18N_WHEEL_SPACING, 315.0},
+            {I18N_WHEEL_DIAMETER, 104},
+            {I18N_ROBOT_WEIGHT, 8.132},
         },
     },
     {
-        I18N_AUTO,
+        I18N_AUTO, //自动赛
         {
             {I18N_AUTO "&" I18N_SKILL_AUTO, false},           //自动赛或者纯自动
             {I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE, true}, //红方或者蓝方
+            //以下为自动赛自定义按钮设置
             {"长边&短边", false},
             {"放&不放", false},
             {"视觉启用&不启用", false},

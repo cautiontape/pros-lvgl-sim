@@ -1,7 +1,6 @@
 #include "main.hpp"
 #include <conio.h>
-#if (TEST_MODE == 1)
-
+#if (SIM_MODE == 1)
 int main(int argc, char **argv)
 {
     /*Initialize LittlevGL*/

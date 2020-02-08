@@ -7,16 +7,16 @@ SysBase::SysBase(const json &pragam)
 {
     if (!readSDcard(pragam))
     {
-        logger->error({"从userConfig读取配置"});
+        logger->error({I18N_SYSTEM_READ_USERCONFIG});
         jsonVal = pragam;
         if (!saveData())
-            logger->error({"config.json无法保存, 请检查SD卡"});
+            logger->error({I18N_SYSTEM_SAVE_ERROR});
     }
     for (size_t i = 1; i <= 21; i++)
         _i2cPort.push_back(i); //1-21I2C端口号
     for (size_t i = 1; i <= 8; i++)
         _adiPort.push_back(i); //1-8adi端口号
-    logger->info({"系统基类构造成功"});
+    logger->info({I18N_SYSTEM I18N_BASE I18N_CREATE_SUCCESSFUL});
 }
 
 /*
@@ -31,7 +31,7 @@ bool SysBase::readSDcard(json pragam)
     FILE *file = fopen("/usd/config.json", "r");
     if (file == nullptr)
     {
-        logger->error({"json 文件打开错误"});
+        logger->error({I18N_SYSTEM_READ_ERROR});
         return false;
     }
     char buf[1024];
@@ -39,9 +39,9 @@ bool SysBase::readSDcard(json pragam)
     while (fgets(buf, 1024, file) != nullptr) //读取一行
         line += buf;
     jsonVal = json::parse(line);
-    if (jsonVal["系统信息"]["用户"].get<std::string>() != pragam["系统信息"]["用户"].get<std::string>())
+    if (jsonVal[I18N_SYSTEM_INFO][I18N_USER].get<std::string>() != pragam[I18N_SYSTEM_INFO][I18N_USER].get<std::string>())
     {
-        logger->error({"用户输入错误！请修改robotSet.hpp"});
+        logger->error({"用户选择错误！请修改robotSet.hpp"});
         logger->error({"SD卡上用户名为:", jsonVal["系统信息"]["用户"].get<std::string>()});
         logger->error({"robotSet用户名为:", pragam["系统信息"]["用户"].get<std::string>()});
         while (1)

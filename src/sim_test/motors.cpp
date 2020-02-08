@@ -9,7 +9,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+#include "sim_test/test_config.hpp"
+#if (SIM_MODE == 1)
 #include "pros/motors.hpp"
 
 namespace pros {
@@ -294,3 +295,4 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m)
 }
 } // namespace literals
 } // namespace pros
+#endif

@@ -9,7 +9,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+#include "sim_test/test_config.hpp"
+#if (SIM_MODE == 1)
 #include "pros/imu.hpp"
 
 namespace pros {
@@ -73,3 +74,4 @@ bool Imu::is_calibrating() const
     return true;
 }
 } // namespace pros
+#endif

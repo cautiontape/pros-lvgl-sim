@@ -80,7 +80,7 @@ UserDisplay::UserDisplay()
     lv_anim_create(&a);                                        /*Start the animation*/
 
     //应用全局样式
-    logger->info({I18N_USERDISPALY_CLASS, I18N_CREATE_SUCCESSFUL});
+    logger->info({I18N_USERDISPALY_CLASS I18N_CREATE_SUCCESSFUL});
 }
 void UserDisplay::createTerminal(lv_obj_t *parent)
 {
@@ -144,10 +144,10 @@ void UserDisplay::createUserObj(obj_flag objname, const char *terminalText, lv_o
         }
 
         lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
-        logger->info({I18N_USERDISPALY_CLASS, ":", terminalText, I18N_CREATE_SUCCESSFUL});
+        logger->info({I18N_USERDISPALY_CLASS ":", terminalText, I18N_CREATE_SUCCESSFUL});
     }
     else
-        logger->debug({I18N_USERDISPALY_CLASS, ":", terminalText, I18N_ALREADYEXIST});
+        logger->debug({I18N_USERDISPALY_CLASS ":", terminalText, I18N_ALREADYEXIST});
 
     if (labText != nullptr)
     {
@@ -167,10 +167,10 @@ void UserDisplay::createUserTask(task_flag taskName, lv_task_cb_t task, uint32_t
     if (displayTask[taskName] == nullptr)
     {
         displayTask[taskName] = lv_task_create(task, loopTime, LV_TASK_PRIO_LOW, pragma);
-        logger->info({I18N_USERDISPALY_CLASS, I18N_THREAD ":", terminalText, I18N_CREATE_SUCCESSFUL});
+        logger->info({I18N_USERDISPALY_CLASS I18N_THREAD ":", terminalText, I18N_CREATE_SUCCESSFUL});
     }
     else
-        logger->warnning({I18N_USERDISPALY_CLASS, I18N_THREAD ":", terminalText, I18N_ALREADYEXIST});
+        logger->warnning({I18N_USERDISPALY_CLASS I18N_THREAD ":", terminalText, I18N_ALREADYEXIST});
 }
 /**
  * 删除所有线程 
@@ -184,7 +184,7 @@ void UserDisplay::delTasks()
         {
             lv_task_del(it);
             it = nullptr;
-            logger->info({I18N_DELETE, I18N_USERDISPALY_CLASS, I18N_THREAD, ":", std::to_string(flag)});
+            logger->info({I18N_DELETE I18N_USERDISPALY_CLASS I18N_THREAD ":", std::to_string(flag)});
             flag++;
         }
     }
@@ -201,7 +201,7 @@ void UserDisplay::delObjs()
         {
             lv_obj_del(it);
             it = nullptr;
-            logger->info({I18N_DELETE, I18N_USERDISPALY_CLASS, ":", std::to_string(flag)});
+            logger->info({I18N_DELETE I18N_USERDISPALY_CLASS ":", std::to_string(flag)});
             flag++;
         }
     }

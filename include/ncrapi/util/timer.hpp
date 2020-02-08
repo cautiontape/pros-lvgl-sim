@@ -8,7 +8,7 @@
 
 #pragma once
 #include "ncrapi/units/QTime.hpp"
-
+#include "pros/rtos.hpp"
 namespace ncrapi {
 class Timer
 {

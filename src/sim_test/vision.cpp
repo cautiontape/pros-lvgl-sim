@@ -9,7 +9,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+#include "sim_test/test_config.hpp"
+#if (SIM_MODE == 1)
 #include "pros/vision.hpp"
 
 namespace pros {
@@ -138,3 +139,4 @@ std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const
     return 1;
 }
 } // namespace pros
+#endif

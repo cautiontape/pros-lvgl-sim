@@ -7,6 +7,11 @@
 #include <memory>
 #include <sstream>
 #include <vector>
+extern "C" {
+LV_IMG_DECLARE(logo);
+LV_IMG_DECLARE(field);
+LV_FONT_DECLARE(ncr_font10);
+}
 typedef enum obj_flag {
     OBJ_BTNM_SON, //起始页面下的选项
     BTNM_START,   //按钮阵列 为了防止重复删除 这个也要放前面

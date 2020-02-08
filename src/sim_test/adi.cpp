@@ -10,8 +10,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "sim_test/test_config.hpp"
+#if (SIM_MODE == 1)
 #include "pros/adi.hpp"
-
 namespace pros {
 using namespace pros::c;
 
@@ -120,3 +121,4 @@ std::int32_t ADIGyro::reset(void) const
     return 1;
 }
 } // namespace pros
+#endif
