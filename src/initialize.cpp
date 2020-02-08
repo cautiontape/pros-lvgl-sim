@@ -4,7 +4,6 @@ std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
 std::unique_ptr<ncrapi::SysBase> sysData = nullptr;
 void initialize()
 {
-
     //系统日志初始化
     logger = std::make_unique<ncrapi::Logger>();
     //显示初始化
