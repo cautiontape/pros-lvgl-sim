@@ -23,7 +23,7 @@ const json userData = {
             {"红方&蓝方", true},
             {"长边&短边", false},
             {"放&不放", false},
-            {"启用视觉&不启用视觉", false},
+            {"视觉启用&不启用", false},
 
         },
     },

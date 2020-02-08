@@ -220,6 +220,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
         lv_obj_set_y(userDisplay->terminal, -210);
     //创建标签栏
     lv_obj_t *tab = lv_tabview_create(displayObj[OBJ_COMPETITION], nullptr);
+    lv_obj_set_size(tab, lv_obj_get_width(displayObj[OBJ_COMPETITION]), lv_obj_get_height(displayObj[OBJ_COMPETITION]));
     lv_obj_t *redTab = lv_tabview_add_tab(tab, "红方");
     lv_obj_t *blueTab = lv_tabview_add_tab(tab, "蓝方");
     lv_obj_t *skillTab = lv_tabview_add_tab(tab, "纯自动");
@@ -228,12 +229,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     lv_obj_set_event_cb(tab, compTabChoseAction);
 
     std::vector<std::pair<lv_obj_t *, lv_obj_t *>> compSw; //
-    int nums = -2;                                         //一开始默认有两个不显示的
-    //获取当前元素个数
-    for (auto &it : sysData->jsonVal["自动赛"].items())
-        nums++;
-    if (nums % 2 != 0)
-        nums += 1;
+    int nums = sysData->jsonVal["自动赛"].size() - 2;      //计算单位数量 一开始默认有两个不显示的 注意计数从1开始 0不算
     int posX = 10, posY = 30;
     //创建各种开关和文本条 附带位置设置
     for (auto &it : sysData->jsonVal["自动赛"].items())
@@ -242,11 +238,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
         {
             compSw.push_back(std::make_pair(lv_label_create(displayObj[OBJ_COMPETITION], nullptr), lv_sw_create(displayObj[OBJ_COMPETITION], nullptr))); //创建文本条和开关
             lv_label_set_text(compSw.back().first, it.key().c_str());                                                                                    /*设置文字*/
-            if (nums > 1)
-                lv_obj_set_size(compSw.back().second, 60, ((lv_obj_get_height(displayObj[OBJ_COMPETITION]) - 30) / nums)); //这里的30要跟POSY 初值对应
-            else
-                lv_obj_set_size(compSw.back().second, 60, 25); //这里的30要跟POSY 初值对应
-
+            lv_obj_set_size(compSw.back().second, 60, lv_obj_get_height(compSw.back().first));                                                           //这里的30要跟POSY 初值对应
             if (it.value().get<bool>())
                 lv_sw_on(compSw.back().second, LV_ANIM_OFF); //设置按钮默认值
             else
@@ -262,7 +254,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
                 posY += (lv_obj_get_height(compSw.back().second) * 2);
             }
             else
-                posX = 260;
+                posX = lv_obj_get_width(displayObj[OBJ_COMPETITION]) / 2 + 30;
         }
     }
     //确认按钮设置
@@ -271,7 +263,7 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     lv_label_set_text(confirmLab, "确\n认");
     lv_obj_set_size(confirmBtn, 40, 100); //大小设置
     //设置确定按钮和其文本框的位置
-    lv_obj_align(confirmBtn, displayObj[OBJ_COMPETITION], LV_ALIGN_CENTER, -20, 0);
+    lv_obj_align(confirmBtn, displayObj[OBJ_COMPETITION], LV_ALIGN_CENTER, 0, 0);
 
     //确认按钮的动作
     if (parent == nullptr)

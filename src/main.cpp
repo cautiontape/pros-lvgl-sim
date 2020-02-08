@@ -21,8 +21,7 @@ int main(int argc, char **argv)
     real_kb_drv.type = LV_INDEV_TYPE_KEYPAD;
     real_kb_drv.read_cb = keyboard_read;
     lv_indev_data_t kbDate;
-    keyboard_read(&real_kb_drv, &kbDate);
-    uint32_t lastKbVal = kbDate.key;
+    uint32_t lastKbVal = 255;
     while (1)
     {
         keyboard_read(&real_kb_drv, &kbDate);
@@ -46,6 +45,11 @@ int main(int argc, char **argv)
                     lastKbVal = 52;
                     break;
                 default:
+                    initialize();
+                    competition_initialize();
+                    disabled();
+                    autonomous();
+                    lastKbVal = kbDate.key;
                     break;
             }
 #if defined(_WIN32) || defined(_WIN64)
