@@ -269,19 +269,19 @@ void UserDisplay::createOpObj()
 {
     delTasks();
     delObjs();
-    createUserObj(OBJ_OPCONTROL, "遥控");
+    createUserObj(OBJ_OPCONTROL, I18N_OPCONTROL);
     if (!pros::competition::is_connected()) //没插场控
         createStartObj(displayObj[OBJ_OPCONTROL]);
-    createUserTask(TASK_LOOP, loopTask, 100, "循环时间条");
+    createUserTask(TASK_LOOP, loopTask, 100, I18N_CYCLE_TIME_BAR);
 }
 void UserDisplay::createStartObj(lv_obj_t *parent)
 {
     // if (visionData != nullptr)
     //     visionData->setSig(sysData->jsonVal, sysData->jsonVal["视觉信息"]["数据"].get<int>());
-    static const char *startBtnm[] = {"系统信息", "自定义测试", "\n",
-                                      "全局参数设置", "维护信息", "\n",
-                                      "PID调试", "视觉传感器设置", "\n",
-                                      "ODOM测试", "版本号", ""};
+    static const char *startBtnm[] = {I18N_SYSTEM_INFO, I18N_BTNM_CUSTOM_TEST, "\n",
+                                      I18N_BTNM_GOBAL_CONFIG_SET, I18N_BTNM_MAINTENANCE_INFO, "\n",
+                                      I18N_BTNM_PID_SET, I18N_BTNM_VISION_SET, "\n",
+                                      I18N_BTNM_ODOM_SET, I18N_BTNM_VERSION, ""};
     if (displayObj[BTNM_START] == nullptr)
         displayObj[BTNM_START] = lv_btnm_create(parent, nullptr); //创建按钮集群
 

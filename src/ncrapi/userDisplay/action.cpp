@@ -208,25 +208,25 @@ void UserDisplay::startBtnmAction(lv_obj_t *btnm, lv_event_t event)
     if (event == LV_EVENT_VALUE_CHANGED)
     {
         std::string btn = lv_btnm_get_active_btn_text(btnm);
-        if (btn == "系统信息")
+        if (btn == I18N_SYSTEM_INFO)
             ;
-        else if (btn == "全局参数设置")
+        else if (btn == I18N_BTNM_GOBAL_CONFIG_SET)
             ;
-        else if (btn == "维护信息")
+        else if (btn == I18N_BTNM_MAINTENANCE_INFO)
             ;
-        else if (btn == "视觉传感器设置")
+        else if (btn == I18N_BTNM_VISION_SET)
             ;
-        else if (btn == "版本号")
+        else if (btn == I18N_BTNM_VERSION)
             ;
-        else if (btn == "自定义测试")
+        else if (btn == I18N_BTNM_CUSTOM_TEST)
             ;
-        else if (btn == "PID调试")
+        else if (btn == I18N_BTNM_PID_SET)
             ;
-        else if (btn == "ODOM测试")
+        else if (btn == I18N_BTNM_ODOM_SET)
             ;
         else
             ;
-        logger->info({"选择 ", btn});
+        logger->info({"chose ", btn});
     }
 }
 // lv_res_t UserDisplay::upDownAction(lv_obj_t *btnm, const char *txt)
