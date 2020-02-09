@@ -127,17 +127,19 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
 }
 void UserDisplay::mBoxAction(lv_obj_t *mbox, lv_event_t event)
 {
-    if (event != LV_EVENT_PRESSED)
-        return;
-
-    std::string btn = lv_mbox_get_active_btn_text(mbox);
-    if (btn == I18N_RED_ALLIANCE)
+    if (event == LV_EVENT_PRESSED)
     {
-        lv_mbox_set_text(mbox, btn.c_str());
-    }
-    else
-    {
-        lv_mbox_set_text(mbox, btn.c_str());
+        std::string btn = lv_mbox_get_active_btn_text(mbox);
+        if (btn == I18N_RED_ALLIANCE)
+        {
+            sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE] = false;
+            lv_mbox_set_text(mbox, btn.c_str());
+        }
+        else
+        {
+            sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE] = true;
+            lv_mbox_set_text(mbox, btn.c_str());
+        }
     }
 }
 

@@ -202,7 +202,19 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     lv_obj_t *redTab = lv_tabview_add_tab(tab, I18N_RED_ALLIANCE);
     lv_obj_t *blueTab = lv_tabview_add_tab(tab, I18N_BLUD_ALLIANCE);
     lv_obj_t *skillTab = lv_tabview_add_tab(tab, I18N_SKILL_AUTO);
-    lv_tabview_set_tab_act(tab, sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE].get<uint16_t>(), false); //设置默认红方还是蓝方
+    //根据系统设置标签
+    lv_tabview_set_tab_act(tab, sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE].get<uint16_t>(), LV_ANIM_OFF); //设置默认红方还是蓝方
+    //进去后默认颜色
+    if (!sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE]) //红方0
+    {
+        userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_RED;
+        userDisplay->mainStyle.body.main_color = LV_COLOR_RED;
+    }
+    else
+    {
+        userDisplay->theme->style.tabview.bg->body.main_color = LV_COLOR_BLUE;
+        userDisplay->mainStyle.body.main_color = LV_COLOR_BLUE;
+    }
     /*当选项卡按下后进行的操作*/
     lv_obj_set_event_cb(tab, compTabChoseAction);
 
