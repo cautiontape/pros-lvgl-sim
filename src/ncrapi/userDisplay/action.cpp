@@ -162,7 +162,7 @@ void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
         if (userDisplay->displayObj[OBJ_BTNM_SON] != nullptr)
         {
             // if (!sysData->jsonVal[I18N_AUTO][I18N_RED_ALLIANCE "&" I18N_BLUD_ALLIANCE]) //设置默认颜色
-            //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_RED;
+            //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = (lv_color_t)LV_COLOR_RED;
             // else
             //     userDisplay->displayObj[OBJ_BTNM_SON]->style_p->body.main_color = LV_COLOR_BLUE;
             lv_obj_del(userDisplay->displayObj[OBJ_BTNM_SON]);

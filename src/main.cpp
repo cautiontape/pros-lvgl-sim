@@ -36,12 +36,16 @@ int main(int argc, char **argv)
                     lastKbVal = 50;
                     break;
                 case 51:
-                    competition_initialize();
+                    opcontrol();
                     lastKbVal = 51;
                     break;
                 case 52:
-                    disabled();
+                    competition_initialize();
                     lastKbVal = 52;
+                    break;
+                case 53:
+                    disabled();
+                    lastKbVal = 53;
                     break;
                 default:
                     initialize();

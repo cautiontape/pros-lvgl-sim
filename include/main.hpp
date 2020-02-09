@@ -8,7 +8,7 @@ void autonomous(void);
 void initialize(void);
 void disabled(void);
 void competition_initialize(void);
-#if (TEST_MODE == 0)
+#if (SIM_MODE == 1)
 void opcontrol(void);
 #endif
 #ifdef __cplusplus
