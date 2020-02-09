@@ -3,35 +3,7 @@
 #include "ncrapi/system/sysBase.hpp"
 
 namespace ncrapi {
-void btn_event_cb(lv_obj_t *btn, lv_event_t event)
-{
-    switch (event)
-    {
-        case LV_EVENT_PRESSED:
-            printf("Pressed\n");
-            break;
 
-        case LV_EVENT_SHORT_CLICKED:
-            printf("Short clicked\n");
-            break;
-
-        case LV_EVENT_CLICKED:
-            printf("Clicked\n");
-            break;
-
-        case LV_EVENT_LONG_PRESSED:
-            printf("Long press\n");
-            break;
-
-        case LV_EVENT_LONG_PRESSED_REPEAT:
-            printf("Long press repeat\n");
-            break;
-
-        case LV_EVENT_RELEASED:
-            printf("Released\n");
-            break;
-    }
-}
 UserDisplay::UserDisplay()
 {
     /*初始化外星人主题*/
@@ -77,7 +49,14 @@ UserDisplay::UserDisplay()
     a.repeat = 0;
     lv_anim_set_ready_cb(&a, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
     lv_anim_create(&a);                                        /*Start the animation*/
-
+    //创建mbox
+    lv_obj_t *mbox = lv_mbox_create(lv_scr_act(), nullptr);
+    lv_mbox_set_text(mbox, I18N_USERDISPALY_MBOX);
+    static const char *btns[] = {I18N_RED_ALLIANCE, I18N_BLUD_ALLIANCE, ""}; /*Button description. '\221' lv_btnm like control char*/
+    lv_mbox_add_btns(mbox, btns);
+    lv_obj_set_width(mbox, 250);
+    lv_obj_align(mbox, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 20); /*Align to the corner*/
+    lv_obj_set_event_cb(mbox, mBoxAction);
     //应用全局样式
     logger->info({I18N_USERDISPALY_CLASS I18N_CREATE_SUCCESSFUL});
 }
@@ -287,16 +266,6 @@ void UserDisplay::createStartObj(lv_obj_t *parent)
     // lv_obj_set_size(displayObj[BTNM_START], lv_obj_get_width(parent), lv_obj_get_height(parent));
     // lv_btnm_set_action(displayObj[BTNM_START], startBtnmAction);
 }
-// void UserDisplay::createMbox(obj_flag objname, const char *txt1, const char *txt2, const char *txt3, lv_btnm_action_t action) //创建一个消息框
-// {
-//     lv_obj_t *mbox = lv_mbox_create(displayObj[objname], nullptr);
-//     lv_mbox_set_text(mbox, txt1);
-//     static const char *btns[] = {txt2, txt3, ""}; /*Button description. '\221' lv_btnm like control char*/
-//     lv_mbox_add_btns(mbox, btns, nullptr);
-//     lv_obj_set_width(mbox, 250);
-//     lv_obj_align(mbox, displayObj[objname], LV_ALIGN_IN_LEFT_MID, 0, 20); /*Align to the corner*/
-//     lv_mbox_set_action(mbox, action);
-// }
 
 void UserDisplay::createExitBtn(obj_flag objname, const int x, const int y, const int width, const int high) //创建退出按钮
 {

@@ -40,6 +40,7 @@
 
 //USERDISPLAY
 #define I18N_USERDISPALY_CLASS "图像类"
+#define I18N_USERDISPALY_MBOX "请选择红蓝方"
 #define I18N_COMPETITION_INIT "竞赛初始化"
 #define I18N_COMPETITION_TAB_CHOSE_ERROR "竞赛场控页面选项卡页面返回错误"
 #define I18N_COMPETITION_CONFIRM_ERROR "自动赛json选项设置错误 请用&间隔"

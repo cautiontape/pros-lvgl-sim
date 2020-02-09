@@ -73,7 +73,6 @@ class UserDisplay
     void createExitBtn(obj_flag objname, const int x = LV_HOR_RES - 80, const int y = LV_VER_RES - 60, const int width = 50, const int high = 25);   //创建退出按钮
     void createSaveBtn(obj_flag objname, const int x = LV_HOR_RES - 140, const int y = LV_VER_RES - 60, const int width = 50, const int high = 25);  //创建保存按钮
     void createResetBtn(obj_flag objname, const int x = LV_HOR_RES - 140, const int y = LV_VER_RES - 60, const int width = 50, const int high = 25); //创建重制传感器按钮
-    //void createMbox(obj_flag objname, const char *txt1, const char *txt2, const char *txt3, lv_btnm_action_t action);                                //创建一个消息框
     void init();
     static void hidenAction(lv_obj_t *btn, lv_event_t event); //隐藏按钮
 
@@ -85,6 +84,7 @@ class UserDisplay
     static void closeAction(lv_obj_t *btn, lv_event_t event);         //退出按钮的动作
     static void resetAction(lv_obj_t *btn, lv_event_t event);         //重置按钮的动作
     static void saveAction(lv_obj_t *btn, lv_event_t event);          //保存按钮的动作
+    static void mBoxAction(lv_obj_t *btn, lv_event_t event);          //弹出选项卡动作
     static lv_res_t startBtnmAction(lv_obj_t *btnm, const char *txt); //启动页面动作
     static lv_res_t upDownAction(lv_obj_t *btnm, const char *txt);    //upDownBtn的动作
 

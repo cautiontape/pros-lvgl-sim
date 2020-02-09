@@ -3,6 +3,7 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
 
 namespace ncrapi {
+
 void UserDisplay::hidenAction(lv_obj_t *btn, lv_event_t event)
 {
     (void)btn; /*Unused*/
@@ -124,6 +125,22 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
         lv_obj_align(autoinfoLab, userDisplay->displayObj[OBJ_COMPETITION], LV_ALIGN_IN_TOP_MID, 0, 0);
     }
 }
+void UserDisplay::mBoxAction(lv_obj_t *mbox, lv_event_t event)
+{
+    if (event != LV_EVENT_PRESSED)
+        return;
+
+    std::string btn = lv_mbox_get_active_btn_text(mbox);
+    if (btn == I18N_RED_ALLIANCE)
+    {
+        lv_mbox_set_text(mbox, btn.c_str());
+    }
+    else
+    {
+        lv_mbox_set_text(mbox, btn.c_str());
+    }
+}
+
 void UserDisplay::confirmBtnInOdom(lv_obj_t *btn, lv_event_t event)
 {
     (void)btn;

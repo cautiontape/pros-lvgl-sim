@@ -46,8 +46,6 @@ int main(int argc, char **argv)
                 default:
                     initialize();
                     competition_initialize();
-                    disabled();
-                    autonomous();
                     lastKbVal = kbDate.key;
                     break;
             }
