@@ -28,24 +28,20 @@ int main(int argc, char **argv)
             switch (kbDate.key)
             {
                 case 49:
-                    initialize();
+                    autonomous();
                     lastKbVal = 49;
                     break;
                 case 50:
-                    autonomous();
+                    opcontrol();
                     lastKbVal = 50;
                     break;
                 case 51:
-                    opcontrol();
+                    competition_initialize();
                     lastKbVal = 51;
                     break;
                 case 52:
-                    competition_initialize();
-                    lastKbVal = 52;
-                    break;
-                case 53:
                     disabled();
-                    lastKbVal = 53;
+                    lastKbVal = 52;
                     break;
                 default:
                     initialize();

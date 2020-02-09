@@ -1,7 +1,7 @@
 #include "ncrapi/userDisplay/userDisplay.hpp"
 #include "ncrapi/system/logger.hpp"
 #include "ncrapi/system/sysBase.hpp"
-
+#include "pros/misc.hpp"
 namespace ncrapi {
 
 UserDisplay::UserDisplay()
@@ -120,7 +120,6 @@ void UserDisplay::createUserObj(obj_flag objname, const char *terminalText, lv_o
             lv_obj_set_size(displayObj[objname], lv_obj_get_width(parent), lv_obj_get_height(parent));
             createExitBtn(objname); //退出按钮
         }
-
         lv_obj_set_style(displayObj[objname], &mainStyle); //设置样式
         logger->info({I18N_USERDISPALY_CLASS ":", terminalText, I18N_CREATE_SUCCESSFUL});
     }
@@ -263,20 +262,32 @@ void UserDisplay::createCompe(lv_obj_t *parent)
     //调用按钮页面
     //TODO 技能赛的动作
 }
+/**
+ * 创建遥控模块页面 
+ */
+void UserDisplay::createOpObj()
+{
+    delTasks();
+    delObjs();
+    createUserObj(OBJ_OPCONTROL, "遥控");
+    if (!pros::competition::is_connected()) //没插场控
+        createStartObj(displayObj[OBJ_OPCONTROL]);
+    createUserTask(TASK_LOOP, loopTask, 100, "循环时间条");
+}
 void UserDisplay::createStartObj(lv_obj_t *parent)
 {
     // if (visionData != nullptr)
     //     visionData->setSig(sysData->jsonVal, sysData->jsonVal["视觉信息"]["数据"].get<int>());
-    // static const char *startBtnm[] = {"系统信息", "自定义测试", "\n",
-    //                                   "全局参数设置", "维护信息", "\n",
-    //                                   "PID调试", "视觉传感器设置", "\n",
-    //                                   "ODOM测试", "版本号", ""};
-    // if (displayObj[BTNM_START] == nullptr)
-    //     displayObj[BTNM_START] = lv_btnm_create(parent, nullptr); //创建按钮集群
+    static const char *startBtnm[] = {"系统信息", "自定义测试", "\n",
+                                      "全局参数设置", "维护信息", "\n",
+                                      "PID调试", "视觉传感器设置", "\n",
+                                      "ODOM测试", "版本号", ""};
+    if (displayObj[BTNM_START] == nullptr)
+        displayObj[BTNM_START] = lv_btnm_create(parent, nullptr); //创建按钮集群
 
-    // lv_btnm_set_map(displayObj[BTNM_START], startBtnm);
-    // lv_obj_set_size(displayObj[BTNM_START], lv_obj_get_width(parent), lv_obj_get_height(parent));
-    // lv_btnm_set_action(displayObj[BTNM_START], startBtnmAction);
+    lv_btnm_set_map(displayObj[BTNM_START], startBtnm);
+    lv_obj_set_size(displayObj[BTNM_START], lv_obj_get_width(parent), lv_obj_get_height(parent));
+    lv_obj_set_event_cb(displayObj[BTNM_START], startBtnmAction);
 }
 
 void UserDisplay::createExitBtn(obj_flag objname, const int x, const int y, const int width, const int high) //创建退出按钮
@@ -309,4 +320,13 @@ void UserDisplay::createExitBtn(obj_flag objname, const int x, const int y, cons
 //     lv_label_set_text(resetLab, "reset");
 //     lv_btn_set_action(resetBtn, LV_BTN_ACTION_CLICK, resetAction);
 // }
+
+void UserDisplay::loopTask(_lv_task_t *param)
+{
+    (void)param;               /*Unused*/
+    userDisplay->ostr.clear(); //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
+    userDisplay->ostr.str(""); //2：调用str("")将缓冲区清零，清除脏数据
+    userDisplay->ostr << "loop:" << userDisplay->loopTime << "max:" << userDisplay->maxLoopTime << "min:" << userDisplay->minLoopTime << std::endl;
+    lv_label_set_text(userDisplay->loopLab, userDisplay->ostr.str().c_str());
+}
 } // namespace ncrapi

@@ -117,12 +117,12 @@ void UserDisplay::compConfirmAction(lv_obj_t *btn, lv_event_t event)
         lv_obj_set_style(confirm, &userDisplay->mainStyle);
         userDisplay->createStartObj(confirm);
         //显示自动赛选项
-        lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[OBJ_COMPETITION], nullptr); //创建LAB条
-        userDisplay->ostr.clear();                                                                  //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
-        userDisplay->ostr.str("");                                                                  //2：调用str("")将缓冲区清零，清除脏数据
+        lv_obj_t *autoinfoLab = lv_label_create(userDisplay->displayObj[BTNM_START], nullptr); //创建LAB条
+        userDisplay->ostr.clear();                                                             //1：调用clear()清除当前错误控制状态，其原型为 void clear (iostate state=goodbit);
+        userDisplay->ostr.str("");                                                             //2：调用str("")将缓冲区清零，清除脏数据
         userDisplay->ostr << str << std::endl;
         lv_label_set_text(autoinfoLab, userDisplay->ostr.str().c_str());
-        lv_obj_align(autoinfoLab, userDisplay->displayObj[OBJ_COMPETITION], LV_ALIGN_IN_TOP_MID, 0, 0);
+        lv_obj_align(autoinfoLab, userDisplay->displayObj[BTNM_START], LV_ALIGN_IN_TOP_MID, 0, 0);
     }
 }
 void UserDisplay::mBoxAction(lv_obj_t *mbox, lv_event_t event)
@@ -197,34 +197,38 @@ void UserDisplay::closeAction(lv_obj_t *btn, lv_event_t event)
 //     return LV_RES_OK;
 // }
 
-// /**
-//  * 按钮阵列的动作
-//  * @param  btnm 按钮阵列
-//  * @param  txt  按钮的名字
-//  * @return      系统值
-//  */
-// lv_res_t UserDisplay::startBtnmAction(lv_obj_t *btnm, const char *txt)
-// {
-//     (void)btnm; /*Unused*/
-//     if (!strcmp(txt, "系统信息"))
-//         userDisplay->createSysInfo(userDisplay->displayObj[BTNM_START]); //1
-//     else if (!strcmp(txt, "全局参数设置"))
-//         userDisplay->createConfig(userDisplay->displayObj[BTNM_START]); //2 创建CONFIGSET页面
-//     else if (!strcmp(txt, "维护信息"))
-//         userDisplay->createMaintenanceInfo(userDisplay->displayObj[BTNM_START]); //3
-//     else if (!strcmp(txt, "视觉传感器设置"))
-//         userDisplay->createVision(userDisplay->displayObj[BTNM_START]); //4创建视觉页面
-//     else if (!strcmp(txt, "版本号"))
-//         userDisplay->createVersion(userDisplay->displayObj[BTNM_START]); //5
-//     else if (!strcmp(txt, "自定义测试"))
-//         userDisplay->createCustomTest(userDisplay->displayObj[BTNM_START]); //6
-//     else if (!strcmp(txt, "PID调试"))
-//         userDisplay->createPidTest(userDisplay->displayObj[BTNM_START]); //7
-//     else if (!strcmp(txt, "ODOM测试"))
-//         userDisplay->createOdom(userDisplay->displayObj[BTNM_START]); //8
-//     logger->info({"选择 ", txt});
-//     return LV_RES_INV;
-// }
+/**
+ * 按钮阵列的动作
+ * @param  btnm 按钮阵列
+ * @param  txt  按钮的名字
+ * @return      系统值
+ */
+void UserDisplay::startBtnmAction(lv_obj_t *btnm, lv_event_t event)
+{
+    if (event == LV_EVENT_VALUE_CHANGED)
+    {
+        std::string btn = lv_btnm_get_active_btn_text(btnm);
+        if (btn == "系统信息")
+            ;
+        else if (btn == "全局参数设置")
+            ;
+        else if (btn == "维护信息")
+            ;
+        else if (btn == "视觉传感器设置")
+            ;
+        else if (btn == "版本号")
+            ;
+        else if (btn == "自定义测试")
+            ;
+        else if (btn == "PID调试")
+            ;
+        else if (btn == "ODOM测试")
+            ;
+        else
+            ;
+        logger->info({"选择 ", btn});
+    }
+}
 // lv_res_t UserDisplay::upDownAction(lv_obj_t *btnm, const char *txt)
 // {
 //     lv_obj_t *labPtr = static_cast<lv_obj_t *>(lv_obj_get_free_ptr(btnm));

@@ -59,8 +59,8 @@ class UserDisplay
     void createUserTask(task_flag taskName, lv_task_cb_t task, uint32_t loopTime, const char *terminalText, void *pragma = nullptr);
     void createCompe(lv_obj_t *parent = nullptr); //自动赛选择页面
     void createOpObj();
-    static void loopTask(void *param);     //获取时间的线程
-    void createTerminal(lv_obj_t *parent); //创建控制台
+    static void loopTask(struct _lv_task_t *); //获取时间的线程
+    void createTerminal(lv_obj_t *parent);     //创建控制台
     void createStartObj(lv_obj_t *parent);
     void createVersion(lv_obj_t *parent);                                                                                                            //1
     void createConfig(lv_obj_t *parent);                                                                                                             //2
@@ -76,17 +76,17 @@ class UserDisplay
     void init();
     static void hidenAction(lv_obj_t *btn, lv_event_t event); //隐藏按钮
 
-    static void clearAction(lv_obj_t *btn, lv_event_t event);         //控制台清楚按钮
-    static void compTabChoseAction(lv_obj_t *btn, lv_event_t event);  //用于自动赛选择的静态函数
-    static void swAction(lv_obj_t *sw, lv_event_t event);             //COMP的SW开关
-    static void compConfirmAction(lv_obj_t *btn, lv_event_t event);   //用于自动赛确认页面的静态函数
-    static void confirmBtnInOdom(lv_obj_t *btn, lv_event_t event);    //用于ODOM自动赛选择的静态动作函数
-    static void closeAction(lv_obj_t *btn, lv_event_t event);         //退出按钮的动作
-    static void resetAction(lv_obj_t *btn, lv_event_t event);         //重置按钮的动作
-    static void saveAction(lv_obj_t *btn, lv_event_t event);          //保存按钮的动作
-    static void mBoxAction(lv_obj_t *btn, lv_event_t event);          //弹出选项卡动作
-    static lv_res_t startBtnmAction(lv_obj_t *btnm, const char *txt); //启动页面动作
-    static lv_res_t upDownAction(lv_obj_t *btnm, const char *txt);    //upDownBtn的动作
+    static void clearAction(lv_obj_t *btn, lv_event_t event);        //控制台清楚按钮
+    static void compTabChoseAction(lv_obj_t *btn, lv_event_t event); //用于自动赛选择的静态函数
+    static void swAction(lv_obj_t *sw, lv_event_t event);            //COMP的SW开关
+    static void compConfirmAction(lv_obj_t *btn, lv_event_t event);  //用于自动赛确认页面的静态函数
+    static void confirmBtnInOdom(lv_obj_t *btn, lv_event_t event);   //用于ODOM自动赛选择的静态动作函数
+    static void closeAction(lv_obj_t *btn, lv_event_t event);        //退出按钮的动作
+    static void resetAction(lv_obj_t *btn, lv_event_t event);        //重置按钮的动作
+    static void saveAction(lv_obj_t *btn, lv_event_t event);         //保存按钮的动作
+    static void mBoxAction(lv_obj_t *btn, lv_event_t event);         //弹出选项卡动作
+    static void startBtnmAction(lv_obj_t *btnm, lv_event_t event);   //启动页面动作
+    static void upDownAction(lv_obj_t *btnm, lv_event_t event);      //upDownBtn的动作
 
     json _tempData;
     std::ostringstream ostr;
