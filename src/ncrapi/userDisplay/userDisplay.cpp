@@ -1,7 +1,8 @@
-#include "ncrapi/userDisplay/userDisplay.hpp"
-#include "ncrapi/system/logger.hpp"
-#include "ncrapi/system/sysBase.hpp"
+#include "ncrapi/ncrapi.hpp"
 #include "pros/misc.hpp"
+#include <iomanip>
+
+
 namespace ncrapi {
 
 UserDisplay::UserDisplay()
@@ -49,14 +50,7 @@ UserDisplay::UserDisplay()
     a.repeat = 0;
     lv_anim_set_ready_cb(&a, (lv_anim_ready_cb_t)lv_anim_del); /*Set a callback to call then animation is ready. (Optional)*/
     lv_anim_create(&a);                                        /*Start the animation*/
-    //创建mbox
-    lv_obj_t *mbox = lv_mbox_create(lv_scr_act(), nullptr);
-    lv_mbox_set_text(mbox, I18N_USERDISPALY_MBOX);
-    static const char *btns[] = {I18N_RED_ALLIANCE, I18N_BLUD_ALLIANCE, ""}; /*Button description. '\221' lv_btnm like control char*/
-    lv_mbox_add_btns(mbox, btns);
-    lv_obj_set_width(mbox, 250);
-    lv_obj_align(mbox, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 20); /*Align to the corner*/
-    lv_obj_set_event_cb(mbox, mBoxAction);
+
     //应用全局样式
     logger->info({I18N_USERDISPALY_CLASS I18N_CREATE_SUCCESSFUL});
 }
@@ -148,6 +142,33 @@ void UserDisplay::createUserTask(task_flag taskName, lv_task_cb_t task, uint32_t
     }
     else
         logger->warnning({I18N_USERDISPALY_CLASS I18N_THREAD ":", terminalText, I18N_ALREADYEXIST});
+}
+void UserDisplay::init()
+{
+
+    if (!sysData->jsonVal["自动赛"]["红方&蓝方"]) //设置默认颜色
+    {
+        theme->style.tabview.bg->body.main_color = LV_COLOR_RED;
+        mainStyle.body.main_color = LV_COLOR_RED;
+    }
+    else
+    {
+        theme->style.tabview.bg->body.main_color = LV_COLOR_BLUE;
+        mainStyle.body.main_color = LV_COLOR_BLUE;
+    }
+    lv_obj_t *robotInfoLab = lv_label_create(terminal, nullptr);
+    lv_obj_set_pos(robotInfoLab, 10, LV_VER_RES - 25);
+    std::string userInfo = sysData->jsonVal["系统信息"]["用户"].get<std::string>() + " " + sysData->jsonVal["系统信息"]["队伍编号"].get<std::string>() + " 版本号:" + NCR_VERSION_STRING;
+    lv_label_set_text(robotInfoLab, userInfo.c_str());
+    //创建mbox
+    lv_obj_t *mbox = lv_mbox_create(lv_scr_act(), nullptr);
+    lv_mbox_set_text(mbox, I18N_USERDISPALY_MBOX);
+    static const char *btns[] = {I18N_RED_ALLIANCE, I18N_BLUD_ALLIANCE, ""}; /*Button description. '\221' lv_btnm like control char*/
+    lv_mbox_add_btns(mbox, btns);
+    lv_obj_set_width(mbox, 250);
+    lv_obj_align(mbox, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 20); /*Align to the corner*/
+    lv_obj_set_event_cb(mbox, mBoxAction);
+    lv_theme_set_current(theme);
 }
 /**
  * 删除所有线程 

@@ -1,17 +1,19 @@
 #pragma once
+//#include "ncrapi/robotParts/chassis.hpp"
+//#include "ncrapi/robotParts/generic.hpp"
 #include "ncrapi/system/logger.hpp"
 #include "ncrapi/system/sysBase.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
+
 #define NCR_VERSION_STRING "9.7.1"
 
 // //通用部件
 // extern std::shared_ptr<pros::Controller> joy1;
 // extern std::shared_ptr<pros::Controller> joy2;
-// extern std::shared_ptr<ncrapi::ChassisOdom> chassis; //底盘
-// extern std::shared_ptr<ncrapi::Lift> lift;           //升降
-// extern std::shared_ptr<ncrapi::Jack> jack;           //千斤顶
-// extern std::shared_ptr<ncrapi::CapIntake> intake;    //夹子
-// extern std::shared_ptr<ncrapi::Roulette> roulette;   //吸吐
+// extern std::shared_ptr<ncrapi::Chassis> chassis;  //底盘
+// extern std::shared_ptr<ncrapi::Generic> lift;     //升降
+// extern std::shared_ptr<ncrapi::Generic> jack;     //千斤顶
+// extern std::shared_ptr<ncrapi::Generic> roulette; //吸吐
 // extern pros::Task *autoTask;
 
 // static void taskAuto(void *para)
