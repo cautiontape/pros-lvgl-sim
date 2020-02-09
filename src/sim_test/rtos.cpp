@@ -2,37 +2,27 @@
 #if (SIM_MODE == 1)
 #include "lvgl/lvgl.h"
 #include "pros/rtos.hpp"
-
+#if defined(_WIN32) || defined(_WIN64)
+#include <Windows.h>
+#elif (__linux)
+#include <pthread.h>
+#include <unistd.h>
+#else
+#endif
 namespace pros {
-namespace competition {
-/**
- * Get the current status of the competition control.
- *
- * \return The competition control status as a mask of bits with
- * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
- */
-std::uint8_t get_status(void)
-{
-    return 0;
-}
 
-std::uint8_t is_autonomous(void)
-{
-    return 0;
-}
-std::uint8_t is_connected(void)
-{
-    return 0;
-}
-std::uint8_t is_disabled(void)
-{
-    return 0;
-}
-} // namespace competition
 namespace c {
 uint32_t millis(void)
 {
     return lv_tick_get();
+}
+void delay(const uint32_t milliseconds)
+{
+#if defined(_WIN32) || defined(_WIN64)
+    Sleep(milliseconds);
+#else
+    usleep(milliseconds); /*Just to let the system breath*/
+#endif
 }
 } // namespace c
 } // namespace pros
