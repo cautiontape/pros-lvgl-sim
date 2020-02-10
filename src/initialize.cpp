@@ -3,13 +3,13 @@ std::unique_ptr<ncrapi::Logger> logger = nullptr; //系统日志
 std::unique_ptr<ncrapi::UserDisplay> userDisplay = nullptr;
 std::unique_ptr<ncrapi::SysBase> sysData = nullptr;
 
-// std::shared_ptr<pros::Controller> joy1;
-// std::shared_ptr<pros::Controller> joy2;
-// std::shared_ptr<ncrapi::Chassis> chassis;  //底盘
-// std::shared_ptr<ncrapi::Generic> lift;     //升降
-// std::shared_ptr<ncrapi::Generic> jack;     //千斤顶
-// std::shared_ptr<ncrapi::Generic> roulette; //吸吐
-// pros::Task *autoTask;
+std::shared_ptr<pros::Controller> joy1 = nullptr;
+std::shared_ptr<pros::Controller> joy2 = nullptr;
+std::shared_ptr<ncrapi::Chassis> chassis = nullptr;  //底盘
+std::shared_ptr<ncrapi::Generic> lift = nullptr;     //升降
+std::shared_ptr<ncrapi::Generic> jack = nullptr;     //千斤顶
+std::shared_ptr<ncrapi::Generic> roulette = nullptr; //吸吐
+pros::Task *autoTask = nullptr;
 void initialize()
 {
     //系统日志初始化
@@ -19,13 +19,13 @@ void initialize()
     sysData = std::make_unique<ncrapi::SysBase>(userData);
     userDisplay->init();
     //遥控器初始化
-    // joy1 = std::make_shared<pros::Controller>(CONTROLLER_MASTER);  //主遥控器
-    // joy2 = std::make_shared<pros::Controller>(CONTROLLER_PARTNER); //副遥控器
+    joy1 = std::make_shared<pros::Controller>(CONTROLLER_MASTER);  //主遥控器
+    joy2 = std::make_shared<pros::Controller>(CONTROLLER_PARTNER); //副遥控器
     //机器人部件初始化
-    // chassis = std::make_shared<ncrapi::Chassis>(sysData->jsonVal["底盘"]);
-    // roulette = std::make_shared<ncrapi::Generic>(sysData->jsonVal["吸吐"]);
-    // jack = std::make_shared<ncrapi::Generic>(sysData->jsonVal["千斤顶"]);
-    // lift = std::make_shared<ncrapi::Generic>(sysData->jsonVal["升降"]);
+    chassis = std::make_shared<ncrapi::Chassis>(sysData->jsonVal["底盘"]);
+    //roulette = std::make_shared<ncrapi::Generic>(sysData->jsonVal["吸吐"]);
+    //jack = std::make_shared<ncrapi::Generic>(sysData->jsonVal["千斤顶"]);
+    //lift = std::make_shared<ncrapi::Generic>(sysData->jsonVal["升降"]);
 
 #if defined(__clang__) || defined(_MSC_VER)
 
