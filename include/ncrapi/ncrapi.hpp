@@ -1,6 +1,6 @@
 #pragma once
-//#include "ncrapi/robotParts/chassis.hpp"
-//#include "ncrapi/robotParts/generic.hpp"
+#include "ncrapi/robotParts/chassis.hpp"
+#include "ncrapi/robotParts/generic.hpp"
 #include "ncrapi/system/logger.hpp"
 #include "ncrapi/system/sysBase.hpp"
 #include "ncrapi/userDisplay/userDisplay.hpp"
