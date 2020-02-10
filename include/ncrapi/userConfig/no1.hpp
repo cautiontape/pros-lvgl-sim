@@ -2,7 +2,7 @@
 #include "ncrapi/system/json.hpp"
 //选择模式 1是模拟器模式 0是机器人程序模式
 #define SIM_MODE 1
-//选择语言
+//chose language
 #define CHN
 #if defined(CHN)
 #include "ncrapi/i18n/chinese.hpp" //chinese
