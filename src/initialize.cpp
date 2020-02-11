@@ -6,7 +6,6 @@ std::unique_ptr<ncrapi::SysBase> sysData = nullptr;
 std::shared_ptr<pros::Controller> joy1 = nullptr;
 std::shared_ptr<pros::Controller> joy2 = nullptr;
 std::shared_ptr<ncrapi::Chassis> chassis = nullptr;  //底盘
-std::shared_ptr<ncrapi::Generic> lift = nullptr;     //升降
 std::shared_ptr<ncrapi::Generic> jack = nullptr;     //千斤顶
 std::shared_ptr<ncrapi::Generic> roulette = nullptr; //吸吐
 pros::Task *autoTask = nullptr;
@@ -25,7 +24,6 @@ void initialize()
     chassis = std::make_shared<ncrapi::Chassis>(sysData->jsonVal["底盘"]);
     roulette = std::make_shared<ncrapi::Generic>("吸吐", sysData->jsonVal["吸吐"]);
     jack = std::make_shared<ncrapi::Generic>("千斤顶", sysData->jsonVal["千斤顶"]);
-    lift = std::make_shared<ncrapi::Generic>("升降", sysData->jsonVal["升降"]);
 
 #if defined(__clang__) || defined(_MSC_VER)
 
