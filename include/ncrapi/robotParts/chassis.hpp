@@ -31,6 +31,7 @@ class Chassis : public Obj
      * @param left 左轮速度+-127 +前进 -后退
      * @param right  右轮速度+-127 +前进 -后退
      */
+    virtual ~Chassis() {}
     void set(const int left, const int right);
     /**
      * @brief 开环控制底盘左右轮和中轮速度

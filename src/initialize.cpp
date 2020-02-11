@@ -23,9 +23,9 @@ void initialize()
     joy2 = std::make_shared<pros::Controller>(CONTROLLER_PARTNER); //副遥控器
     //机器人部件初始化
     chassis = std::make_shared<ncrapi::Chassis>(sysData->jsonVal["底盘"]);
-    //roulette = std::make_shared<ncrapi::Generic>(sysData->jsonVal["吸吐"]);
-    //jack = std::make_shared<ncrapi::Generic>(sysData->jsonVal["千斤顶"]);
-    //lift = std::make_shared<ncrapi::Generic>(sysData->jsonVal["升降"]);
+    roulette = std::make_shared<ncrapi::Generic>("吸吐", sysData->jsonVal["吸吐"]);
+    jack = std::make_shared<ncrapi::Generic>("千斤顶", sysData->jsonVal["千斤顶"]);
+    lift = std::make_shared<ncrapi::Generic>("升降", sysData->jsonVal["升降"]);
 
 #if defined(__clang__) || defined(_MSC_VER)
 

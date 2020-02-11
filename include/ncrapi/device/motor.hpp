@@ -8,7 +8,7 @@ class Motor : public pros::Motor
   public:
     Motor(const std::string &name, const int &port, const bool &isRevase, const int &gearset);
     Motor(const std::string &name, const json &pragma);
-
+    virtual ~Motor() {}
     /**
      *获取马达的名字     
      * @return std::string 返回马达的名字 

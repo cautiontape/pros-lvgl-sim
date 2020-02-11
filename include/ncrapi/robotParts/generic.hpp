@@ -22,6 +22,7 @@ class Generic : public Obj
      * 
      * @return int 悬停值
      */
+    virtual ~Generic() {}
     virtual int getHoldingVal();
     /**
      * 初始化函数
